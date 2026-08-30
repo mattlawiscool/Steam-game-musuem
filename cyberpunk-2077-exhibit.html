@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NODE::CP2077 — Night City Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,700;1,700&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0A0A0E;
+    --panel:#14141B;
+    --panel-2:#1B1B24;
+    --edge:#2A2A36;
+    --cyan:#28F2E5;
+    --magenta:#FF2E7E;
+    --yellow:#F4E409;
+    --text:#E7E5E0;
+    --text-dim:#8A8A96;
+    --danger:#FF3B3B;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.014) 0px, rgba(255,255,255,.014) 1px, transparent 1px, transparent 3px),
+      radial-gradient(ellipse at 15% 0%, rgba(40,242,229,.08), transparent 45%),
+      radial-gradient(ellipse at 85% 20%, rgba(255,46,126,.09), transparent 50%),
+      var(--void);
+    color:var(--text);
+    font-family:'Rajdhani', sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:0 16px 90px;}
+
+  /* ---------- hazard strip ---------- */
+  .hazard{
+    height:10px;
+    background:repeating-linear-gradient(-45deg, var(--yellow) 0 12px, #0A0A0E 12px 24px);
+  }
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 2px 10px;
+    font-family:'Share Tech Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+    border-bottom:1px solid var(--edge);
+  }
+  .topbar .dot{color:var(--cyan);}
+  .blink{animation:blink 1.6s steps(1) infinite;}
+  @keyframes blink{50%{opacity:.25;}}
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    margin:22px 0 30px;
+    padding:34px 22px 26px;
+    background:var(--panel);
+    border:1px solid var(--edge);
+    clip-path:polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(115deg, transparent 40%, rgba(40,242,229,.05) 50%, transparent 60%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:'Share Tech Mono', monospace;
+    font-size:11px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--cyan);
+    margin-bottom:10px;
+  }
+  .eyebrow::before{content:"// ";}
+  h1.title{
+    font-family:'Chakra Petch', sans-serif;
+    font-weight:700;
+    font-style:italic;
+    font-size:clamp(38px, 10vw, 62px);
+    line-height:.94;
+    margin:0 0 14px;
+    color:#fff;
+    text-shadow:
+      2px 0 0 rgba(255,46,126,.55),
+      -2px 0 0 rgba(40,242,229,.55);
+    letter-spacing:-.01em;
+  }
+  .subtitle{
+    font-size:17px;
+    font-weight:500;
+    color:var(--text-dim);
+    max-width:44ch;
+    margin:0 0 20px;
+  }
+  .flag-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .flag{
+    font-family:'Share Tech Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    padding:5px 10px;
+    border:1px solid var(--magenta);
+    color:var(--magenta);
+    background:rgba(255,46,126,.06);
+  }
+  .flag.cy{border-color:var(--cyan); color:var(--cyan); background:rgba(40,242,229,.06);}
+  .flag.yl{border-color:var(--yellow); color:var(--yellow); background:rgba(244,228,9,.06);}
+
+  /* skyline scene */
+  .scene{margin-top:22px; border:1px solid var(--edge); overflow:hidden;}
+
+  /* ---------- section headers ---------- */
+  .sector{margin:44px 0;}
+  .sector-head{
+    display:flex; align-items:baseline; gap:12px;
+    padding-bottom:9px; margin-bottom:16px;
+    border-bottom:1px solid var(--edge);
+  }
+  .sector-id{
+    font-family:'Share Tech Mono', monospace;
+    font-size:11px;
+    color:var(--yellow);
+    letter-spacing:.1em;
+  }
+  .sector-title{
+    font-family:'Chakra Petch', sans-serif;
+    font-weight:700;
+    font-size:23px;
+    color:#fff;
+    text-transform:uppercase;
+  }
+  .sector-sub{
+    margin-left:auto;
+    font-family:'Share Tech Mono', monospace;
+    font-size:10px;
+    color:var(--text-dim);
+    letter-spacing:.08em;
+    text-align:right;
+  }
+
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--edge);
+    border-left:2px solid var(--cyan);
+    padding:20px 20px 18px;
+    margin-bottom:12px;
+  }
+  .panel p{margin:0 0 12px; color:var(--text);}
+  .panel p:last-child{margin-bottom:0;}
+  .panel h3{
+    font-family:'Chakra Petch', sans-serif;
+    font-size:15px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--cyan);
+    margin:0 0 10px;
+  }
+
+  /* timeline */
+  .tl{list-style:none; margin:0; padding:0;}
+  .tl li{
+    display:grid; grid-template-columns:70px 1fr; gap:14px;
+    padding:11px 0;
+    border-top:1px dashed var(--edge);
+  }
+  .tl li:first-child{border-top:none; padding-top:0;}
+  .tl .yr{
+    font-family:'Share Tech Mono', monospace;
+    font-size:12px;
+    color:var(--magenta);
+    font-weight:700;
+  }
+  .tl .ev{font-size:15px; color:var(--text);}
+
+  /* spec grid */
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .spec{
+    background:var(--panel-2);
+    border:1px solid var(--edge);
+    padding:14px 16px;
+  }
+  .spec .k{
+    font-family:'Share Tech Mono', monospace;
+    font-size:9.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--yellow);
+    display:block;
+    margin-bottom:6px;
+  }
+  .spec .v{font-size:14.5px; color:var(--text);}
+
+  /* links */
+  .linklist{display:flex; flex-direction:column; gap:8px;}
+  .linkrow{
+    display:flex; align-items:center; gap:12px;
+    background:var(--panel-2);
+    border:1px solid var(--edge);
+    padding:13px 16px;
+    text-decoration:none;
+    color:var(--text);
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .linkrow:hover{border-color:var(--cyan); transform:translateX(3px);}
+  .linkrow .ico{
+    font-family:'Share Tech Mono', monospace;
+    font-size:12px;
+    color:var(--void);
+    background:var(--cyan);
+    width:24px; height:24px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .linkrow .txt strong{display:block; font-size:14.5px; font-weight:600;}
+  .linkrow .txt span{display:block; font-size:12px; color:var(--text-dim);}
+  .linkrow.placeholder{border-style:dashed; opacity:.75;}
+  .linkrow.placeholder .ico{background:transparent; border:1px dashed var(--text-dim); color:var(--text-dim);}
+
+  /* video */
+  .video-frame{
+    background:var(--panel-2);
+    border:1px solid var(--edge);
+    padding:12px 12px 10px;
+    margin-bottom:12px;
+  }
+  .vlabel{
+    font-family:'Share Tech Mono', monospace;
+    font-size:10.5px;
+    color:var(--text-dim);
+    margin-bottom:10px;
+  }
+  .vlabel strong{color:var(--text); font-weight:600;}
+  .video-embed{position:relative; width:100%; padding-top:56.25%; background:#000;}
+  .video-embed iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+
+  /* review scores */
+  .score-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;}
+  .score-chip{
+    background:var(--panel-2);
+    border:1px solid var(--edge);
+    padding:8px 12px;
+    text-align:center;
+    min-width:62px;
+  }
+  .score-chip .num{
+    font-family:'Chakra Petch', sans-serif;
+    font-weight:700;
+    font-size:19px;
+    color:var(--cyan);
+    display:block;
+    line-height:1;
+  }
+  .score-chip .src{
+    font-family:'Share Tech Mono', monospace;
+    font-size:8.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+    display:block;
+    margin-top:4px;
+  }
+
+  /* rumor notes */
+  .notes{display:flex; flex-direction:column; gap:8px;}
+  .note{
+    background:var(--panel-2);
+    border:1px solid var(--edge);
+    border-left:2px solid var(--magenta);
+    padding:13px 16px;
+    font-size:14.5px;
+    display:flex; gap:10px;
+  }
+  .note .mark{
+    font-family:'Share Tech Mono', monospace;
+    color:var(--magenta);
+    font-weight:700;
+    flex-shrink:0;
+  }
+
+  /* qr */
+  .qrbox{
+    background:var(--panel);
+    border:1px solid var(--edge);
+    padding:24px;
+    text-align:center;
+  }
+  .qrbox input{
+    width:100%;
+    font-family:'Share Tech Mono', monospace;
+    font-size:12.5px;
+    padding:10px 12px;
+    border:1px solid var(--edge);
+    background:var(--void);
+    color:var(--cyan);
+    margin-bottom:14px;
+  }
+  #qrcode{
+    display:inline-flex; align-items:center; justify-content:center;
+    background:#fff; padding:14px;
+    min-height:172px; min-width:172px;
+  }
+  .qrhint{font-family:'Share Tech Mono', monospace; font-size:10.5px; color:var(--text-dim); margin-top:12px;}
+  .btn{
+    font-family:'Share Tech Mono', monospace;
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    background:var(--cyan);
+    color:var(--void);
+    border:none;
+    padding:9px 16px;
+    cursor:pointer;
+    font-weight:700;
+  }
+  .btn.alt{background:var(--magenta);}
+  .btn:hover{filter:brightness(1.15);}
+
+  footer{
+    text-align:center;
+    color:var(--text-dim);
+    font-family:'Share Tech Mono', monospace;
+    font-size:10px;
+    letter-spacing:.1em;
+    margin-top:50px;
+    text-transform:uppercase;
+  }
+
+  @media (max-width:520px){
+    .grid2{grid-template-columns:1fr;}
+    .sector-sub{display:none;}
+  }
+</style>
+</head>
+<body>
+<div class="hazard"></div>
+<div class="wrap">
+
+  <div class="topbar">
+    <span><span class="dot blink">●</span> NIGHT CITY ARCHIVE NODE</span>
+    <span>DIGITAL LIBRARY // SEC.02</span>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="eyebrow">Open-World Action RPG — Est. 2020</div>
+    <h1 class="title">Cyberpunk<br>2077</h1>
+    <p class="subtitle">A mercenary, a dead rockerboy sharing your skull, and a city that will chew you up either way.</p>
+    <div class="flag-row">
+      <span class="flag yl">CD Projekt Red</span>
+      <span class="flag">40M+ Copies · Jul 2026</span>
+      <span class="flag cy">Overwhelmingly Positive</span>
+    </div>
+
+    <div class="scene">
+      <svg viewBox="0 0 720 220" width="100%" style="display:block;">
+        <rect width="720" height="220" fill="#0A0A0E"/>
+        <defs>
+          <linearGradient id="skyfade2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#1a0f22"/>
+            <stop offset="1" stop-color="#0A0A0E"/>
+          </linearGradient>
+        </defs>
+        <rect width="720" height="220" fill="url(#skyfade2)"/>
+        <!-- distant towers -->
+        <g fill="#1B1B24">
+          <rect x="10" y="90" width="26" height="130"/>
+          <rect x="44" y="60" width="20" height="160"/>
+          <rect x="70" y="110" width="30" height="110"/>
+          <rect x="560" y="70" width="24" height="150"/>
+          <rect x="592" y="100" width="18" height="120"/>
+          <rect x="618" y="50" width="26" height="170"/>
+          <rect x="652" y="95" width="20" height="125"/>
+        </g>
+        <!-- main tower cluster -->
+        <g>
+          <rect x="300" y="30" width="34" height="190" fill="#20202B"/>
+          <rect x="340" y="60" width="26" height="160" fill="#181822"/>
+          <rect x="250" y="80" width="28" height="140" fill="#181822"/>
+          <rect x="374" y="45" width="22" height="175" fill="#20202B"/>
+        </g>
+        <!-- neon windows -->
+        <g fill="#28F2E5" opacity=".85">
+          <rect x="305" y="45" width="4" height="4"/><rect x="315" y="55" width="4" height="4"/>
+          <rect x="325" y="70" width="4" height="4"/><rect x="305" y="90" width="4" height="4"/>
+          <rect x="320" y="110" width="4" height="4"/><rect x="256" y="100" width="4" height="4"/>
+          <rect x="266" y="130" width="4" height="4"/><rect x="380" y="70" width="4" height="4"/>
+          <rect x="386" y="100" width="4" height="4"/>
+        </g>
+        <g fill="#FF2E7E" opacity=".85">
+          <rect x="315" y="130" width="4" height="4"/><rect x="330" y="150" width="4" height="4"/>
+          <rect x="260" y="160" width="4" height="4"/><rect x="348" y="90" width="4" height="4"/>
+          <rect x="390" y="140" width="4" height="4"/>
+        </g>
+        <!-- neon sign -->
+        <rect x="292" y="200" width="180" height="3" fill="#F4E409" opacity=".8"/>
+        <!-- haze -->
+        <rect width="720" height="220" fill="url(#skyfade2)" opacity=".15"/>
+        <!-- ground glow -->
+        <rect x="0" y="210" width="720" height="10" fill="#FF2E7E" opacity=".18"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- SECTOR I — ORIGINS -->
+  <div class="sector">
+    <div class="sector-head">
+      <span class="sector-id">SEC.01</span>
+      <span class="sector-title">Origins</span>
+      <span class="sector-sub">Case File &amp;<br>Timeline</span>
+    </div>
+    <div class="panel">
+      <p>Cyberpunk 2077 was announced by CD Projekt Red in 2012, adapted from Mike Pondsmith's tabletop RPG <em>Cyberpunk 2020</em>. Its 2018 gameplay reveal built years of hype around Night City and a mercenary protagonist known only as V. Keanu Reeves joined the cast as Johnny Silverhand, a digitized rockerboy sharing space in V's own head.</p>
+      <p>The December 2020 launch was one of the most notorious in gaming history — a buggy, unfinished-feeling release, especially on last-gen consoles, led Sony to briefly pull the game from the PlayStation Store entirely. What followed was a multi-year comeback: years of patches, a hit Netflix anime tie-in, and a major expansion that turned Night City's reputation around.</p>
+    </div>
+    <div class="panel">
+      <h3>System Log</h3>
+      <ul class="tl">
+        <li><span class="yr">2012</span><span class="ev">CD Projekt Red announces Cyberpunk 2077.</span></li>
+        <li><span class="yr">2018</span><span class="ev">First gameplay reveal at E3 — hype reaches a fever pitch.</span></li>
+        <li><span class="yr">2020</span><span class="ev">Launches Dec 10 — 13.7M copies sold in 21 days, but bugs trigger a PlayStation Store removal.</span></li>
+        <li><span class="yr">2021</span><span class="ev">Returns to the PlayStation Store in June after months of fixes.</span></li>
+        <li><span class="yr">2022</span><span class="ev"><em>Cyberpunk: Edgerunners</em> anime (Studio Trigger) drives a major player surge.</span></li>
+        <li><span class="yr">2023</span><span class="ev">Update 2.0 and the Phantom Liberty expansion land — critical and player redemption.</span></li>
+        <li><span class="yr">2026</span><span class="ev">Hits "Overwhelmingly Positive" on Steam for the first time; tops 40M copies sold.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTOR II — SYSTEM SPECS -->
+  <div class="sector">
+    <div class="sector-head">
+      <span class="sector-id">SEC.02</span>
+      <span class="sector-title">System Specs</span>
+      <span class="sector-sub">Hardware &amp;<br>Setting</span>
+    </div>
+    <div class="grid2">
+      <div class="spec"><span class="k">Developer</span><span class="v">CD Projekt Red</span></div>
+      <div class="spec"><span class="k">Based On</span><span class="v">Cyberpunk 2020 tabletop RPG</span></div>
+      <div class="spec"><span class="k">Setting</span><span class="v">Night City, dark future megalopolis</span></div>
+      <div class="spec"><span class="k">Protagonist</span><span class="v">V, fully customizable mercenary</span></div>
+      <div class="spec"><span class="k">Key Expansion</span><span class="v">Phantom Liberty (2023)</span></div>
+      <div class="spec"><span class="k">Platforms</span><span class="v">PC, PS4/5, Xbox, Switch 2</span></div>
+    </div>
+  </div>
+
+  <!-- SECTOR III — ARCHIVE -->
+  <div class="sector">
+    <div class="sector-head">
+      <span class="sector-id">SEC.03</span>
+      <span class="sector-title">Archive</span>
+      <span class="sector-sub">Media &amp;<br>Reception</span>
+    </div>
+    <div class="linklist">
+      <a class="linkrow" href="https://www.cyberpunk.net/" target="_blank" rel="noopener">
+        <span class="ico">↗</span>
+        <span class="txt"><strong>Official Site</strong><span>cyberpunk.net</span></span>
+      </a>
+      <a class="linkrow" href="https://cyberpunk.fandom.com/" target="_blank" rel="noopener">
+        <span class="ico">↗</span>
+        <span class="txt"><strong>Cyberpunk Wiki</strong><span>Lore, gigs &amp; character reference</span></span>
+      </a>
+    </div>
+
+    <div class="video-frame" style="margin-top:12px;">
+      <div class="vlabel"><strong>E3 2019 Cinematic Trailer</strong> — the reveal that broke the internet</div>
+      <div class="video-embed">
+        <iframe src="https://www.youtube.com/embed/LembwKDo1Dk" title="Cyberpunk 2077 E3 2019 Cinematic Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+    <div class="video-frame">
+      <div class="vlabel"><strong>Official Launch Trailer — "V"</strong> — Dec 2020</div>
+      <div class="video-embed">
+        <iframe src="https://www.youtube.com/embed/UnA7tepsc7s" title="Cyberpunk 2077 Launch Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+    <div class="video-frame">
+      <div class="vlabel"><strong>Phantom Liberty — Cinematic Trailer</strong> — the 2023 redemption arc</div>
+      <div class="video-embed">
+        <iframe src="https://www.youtube.com/embed/sJbexcm4Trk" title="Cyberpunk 2077 Phantom Liberty Cinematic Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="linklist">
+      <a class="linkrow placeholder">
+        <span class="ico">＋</span>
+        <span class="txt"><strong>Add your favorite playthrough</strong><span>Swap this href for a YouTube link</span></span>
+      </a>
+      <a class="linkrow placeholder">
+        <span class="ico">＋</span>
+        <span class="txt"><strong>Add your build / screenshots</strong><span>Link to your own V's story</span></span>
+      </a>
+    </div>
+
+    <div class="panel" style="margin-top:12px;">
+      <h3>Critical Reception</h3>
+      <div class="score-row">
+        <div class="score-chip"><span class="num">86</span><span class="src">Metacritic</span></div>
+        <div class="score-chip"><span class="num">76</span><span class="src">OpenCritic</span></div>
+        <div class="score-chip"><span class="num">87</span><span class="src">Steam Score</span></div>
+        <div class="score-chip"><span class="num">40M+</span><span class="src">Copies Sold</span></div>
+      </div>
+      <p>The rockiest launch of its generation eventually became a comeback story: after years of patches and the Phantom Liberty expansion, Cyberpunk 2077 crossed into "Overwhelmingly Positive" territory on Steam for the first time in 2026 — six years after release.</p>
+    </div>
+    <div class="linklist">
+      <a class="linkrow" href="https://opencritic.com/game/8525/cyberpunk-2077" target="_blank" rel="noopener">
+        <span class="ico">↗</span>
+        <span class="txt"><strong>All Critic Reviews</strong><span>OpenCritic aggregate</span></span>
+      </a>
+      <a class="linkrow" href="https://www.metacritic.com/game/cyberpunk-2077/" target="_blank" rel="noopener">
+        <span class="ico">↗</span>
+        <span class="txt"><strong>Metacritic Page</strong><span>Full critic &amp; user scores</span></span>
+      </a>
+    </div>
+  </div>
+
+  <!-- SECTOR IV — STREET RUMORS -->
+  <div class="sector">
+    <div class="sector-head">
+      <span class="sector-id">SEC.04</span>
+      <span class="sector-title">Street Rumors</span>
+      <span class="sector-sub">Trivia</span>
+    </div>
+    <div class="notes">
+      <div class="note"><span class="mark">01</span>Despite the launch chaos, the game still sold 13.7 million copies in its first 21 days on shelves.</div>
+      <div class="note"><span class="mark">02</span>Sony pulled the game from the PlayStation Store for roughly six months — one of the biggest removals in console storefront history.</div>
+      <div class="note"><span class="mark">03</span><em>Cyberpunk: Edgerunners</em>, the Studio Trigger anime, is widely credited with pulling the playerbase back after 2022.</div>
+      <div class="note"><span class="mark">04</span>A sequel, codenamed Orion, is now in active development at CD Projekt Red.</div>
+    </div>
+  </div>
+
+  <!-- QR TOOL -->
+  <div class="sector">
+    <div class="sector-head">
+      <span class="sector-id">SEC.05</span>
+      <span class="sector-title">Print &amp; Display</span>
+    </div>
+    <div class="qrbox">
+      <input id="qrurl" type="text" value="https://store.steampowered.com/app/1091500/Cyberpunk_2077/">
+      <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
+        <button class="btn" onclick="makeQR()">Generate QR Code</button>
+        <button class="btn alt" onclick="useSteam()">Use Steam Page</button>
+      </div>
+      <div id="qrcode"></div>
+      <div class="qrhint">Defaults to the Steam store page. Swap in this exhibit's own hosted URL once it's live.</div>
+    </div>
+  </div>
+
+  <footer>Curated for a personal digital library // Node 02 of ∞</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  let qr = null;
+  function makeQR(){
+    const url = document.getElementById('qrurl').value.trim();
+    const box = document.getElementById('qrcode');
+    box.innerHTML = '';
+    if(!url){ box.innerHTML = '<span style="font-family:\'Share Tech Mono\',monospace;font-size:11px;color:#333;">Enter a URL first</span>'; return; }
+    qr = new QRCode(box, { text:url, width:160, height:160, colorDark:'#0A0A0E', colorLight:'#ffffff' });
+  }
+  function useSteam(){
+    document.getElementById('qrurl').value = 'https://store.steampowered.com/app/1091500/Cyberpunk_2077/';
+    makeQR();
+  }
+  window.addEventListener('DOMContentLoaded', makeQR);
+</script>
+</body>
+</html>
