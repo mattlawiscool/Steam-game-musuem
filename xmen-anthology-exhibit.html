@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case File — Mutants on Steam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:ital,wght@0,400;0,500;0,600;0,700;1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F1220;
+    --panel:#171B2E;
+    --panel-2:#1E2338;
+    --paper:#EFE9DA;
+    --gold:#E8B23A;
+    --gold-deep:#B8841F;
+    --crimson:#C4262E;
+    --edge:#2C3350;
+    --void:#0A0C16;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-radial-gradient(circle at 0 0, rgba(255,255,255,.02) 0, rgba(255,255,255,.02) 1px, transparent 1px, transparent 6px),
+      radial-gradient(ellipse at 15% -10%, #1c2140 0%, transparent 55%),
+      var(--void);
+    color:var(--paper);
+    font-family:'Barlow Condensed', sans-serif;
+    font-size:17px;
+    font-weight:500;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:770px; margin:0 auto; padding:0 16px 90px;}
+
+  .topbar{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 4px 10px;
+    font-family:'Space Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+    border-bottom:3px solid var(--crimson);
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    margin:24px 0 30px;
+    background:var(--paper);
+    color:var(--ink);
+    padding:36px 24px 26px;
+    clip-path:polygon(0 0, 94% 0, 100% 8%, 100% 100%, 6% 100%, 0 92%);
+    box-shadow:8px 8px 0 var(--crimson);
+  }
+  .stripe{
+    position:absolute; top:0; left:0; right:0; height:10px;
+    background:repeating-linear-gradient(-45deg, var(--gold) 0 10px, var(--ink) 10px 20px);
+  }
+  .eyebrow{
+    text-align:center;
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--crimson);
+    margin:20px 0 8px;
+  }
+  h1.title{
+    font-family:'Anton', sans-serif;
+    font-size:clamp(34px, 9vw, 54px);
+    line-height:.94;
+    text-align:center;
+    margin:0 0 6px;
+    color:var(--ink);
+    text-transform:uppercase;
+  }
+  h2.subhead{
+    text-align:center;
+    font-family:'Anton', sans-serif;
+    font-size:17px;
+    letter-spacing:.05em;
+    color:var(--crimson);
+    margin:0 0 16px;
+    text-transform:uppercase;
+  }
+  .subtitle{
+    text-align:center;
+    font-size:17.5px;
+    font-style:italic;
+    color:#3A3A3A;
+    max-width:46ch;
+    margin:0 auto 20px;
+  }
+  .flag-row{display:flex; gap:8px; flex-wrap:wrap; justify-content:center;}
+  .flag{
+    font-family:'Space Mono', monospace;
+    font-weight:700;
+    font-size:10.5px;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    padding:5px 11px;
+    background:var(--ink);
+    color:var(--paper);
+  }
+  .flag.gold{background:var(--gold-deep); color:var(--ink);}
+
+  .scene{margin-top:22px; overflow:hidden; border:3px solid var(--ink);}
+
+  /* ---------- entries ---------- */
+  .entry{margin:46px 0;}
+  .entry-head{
+    display:flex; align-items:baseline; gap:12px;
+    padding-bottom:8px; margin-bottom:18px;
+    border-bottom:3px solid var(--crimson);
+  }
+  .entry-num{
+    font-family:'Anton', sans-serif;
+    font-size:13px;
+    color:var(--crimson);
+    letter-spacing:.04em;
+  }
+  .entry-title{
+    font-family:'Anton', sans-serif;
+    font-size:25px;
+    color:var(--paper);
+    text-transform:uppercase;
+  }
+  .entry-sub{
+    margin-left:auto;
+    font-family:'Space Mono', monospace;
+    font-weight:700;
+    font-size:10.5px;
+    color:var(--gold);
+    letter-spacing:.06em;
+    text-align:right;
+    text-transform:uppercase;
+  }
+
+  .dossier{
+    background:var(--panel);
+    border:1px solid var(--edge);
+    border-left:5px solid var(--crimson);
+    padding:20px 22px 18px;
+    margin-bottom:12px;
+  }
+  .dossier p{margin:0 0 12px; color:var(--paper); font-size:17px;}
+  .dossier p:last-child{margin-bottom:0;}
+  .dossier h3{
+    font-family:'Anton', sans-serif;
+    font-size:15px;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    color:var(--gold);
+    margin:0 0 12px;
+  }
+
+  .tl{list-style:none; margin:0; padding:0;}
+  .tl li{
+    display:grid; grid-template-columns:64px 1fr; gap:14px;
+    padding:11px 0;
+    border-top:1px dashed var(--edge);
+  }
+  .tl li:first-child{border-top:none; padding-top:0;}
+  .tl .yr{font-family:'Anton', sans-serif; font-size:13px; color:var(--crimson);}
+  .tl .ev{font-size:16.5px; color:var(--paper);}
+
+  /* ---------- roster chapters ---------- */
+  .chapter{
+    margin-bottom:22px;
+    border-left:6px solid var(--gold);
+    background:var(--paper);
+    color:var(--ink);
+    box-shadow:0 14px 30px -16px rgba(0,0,0,.6);
+  }
+  .chapter.crim{border-left-color:var(--crimson);}
+  .chapter-head{
+    padding:18px 20px 12px;
+    display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap;
+  }
+  .chapter-tag{
+    font-family:'Space Mono', monospace;
+    font-weight:700;
+    font-size:10px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--gold-deep);
+    display:block;
+    margin-bottom:4px;
+  }
+  .chapter.crim .chapter-tag{color:var(--crimson);}
+  .chapter-title{
+    font-family:'Anton', sans-serif;
+    font-size:22px;
+    text-transform:uppercase;
+    color:var(--ink);
+    margin:0;
+  }
+  .chapter-year{
+    font-family:'Space Mono', monospace;
+    font-weight:700;
+    font-size:12px;
+    color:#555;
+    border:1px solid #999;
+    padding:4px 10px;
+    white-space:nowrap;
+  }
+  .chapter-body{padding:0 20px 20px;}
+  .chapter-body p{margin:0 0 12px; font-size:16px; color:var(--ink);}
+  .chapter-body p:last-child{margin-bottom:0;}
+
+  .mini-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0;}
+  .mini-spec{background:#E2DBC7; padding:10px 12px;}
+  .mini-spec .k{
+    font-family:'Space Mono', monospace; font-weight:700; font-size:9px; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--crimson); display:block; margin-bottom:4px;
+  }
+  .chapter.crim .mini-spec .k{color:var(--gold-deep);}
+  .mini-spec .v{font-size:13.5px; color:var(--ink);}
+
+  .mini-scores{display:flex; gap:8px; flex-wrap:wrap; margin:12px 0;}
+  .mini-chip{background:#E2DBC7; padding:7px 11px; text-align:center; min-width:56px;}
+  .mini-chip .num{font-family:'Anton', sans-serif; font-size:16px; color:var(--crimson); display:block; line-height:1;}
+  .chapter.crim .mini-chip .num{color:var(--gold-deep);}
+  .mini-chip .src{font-family:'Space Mono', monospace; font-size:7.5px; letter-spacing:.03em; text-transform:uppercase; color:#555; display:block; margin-top:3px;}
+
+  .video-frame{background:#E2DBC7; padding:10px 10px 8px; margin:12px 0;}
+  .vlabel{font-family:'Space Mono', monospace; font-weight:700; font-size:10px; letter-spacing:.03em; color:#555; margin-bottom:8px; text-transform:uppercase;}
+  .vlabel strong{color:var(--ink);}
+  .video-embed{position:relative; width:100%; padding-top:56.25%; background:#000;}
+  .video-embed iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+
+  .chapter-qr-btn{
+    margin-top:10px;
+    font-family:'Anton', sans-serif; font-size:11px; letter-spacing:.03em; text-transform:uppercase;
+    background:var(--crimson); color:var(--paper); border:none; padding:8px 14px; cursor:pointer;
+  }
+  .chapter.crim .chapter-qr-btn{background:var(--gold-deep); color:var(--ink);}
+
+  /* ---------- links ---------- */
+  .linklist{display:flex; flex-direction:column; gap:8px;}
+  .linkrow{
+    display:flex; align-items:center; gap:12px;
+    background:var(--panel-2);
+    border:1px solid var(--edge);
+    padding:13px 16px;
+    text-decoration:none;
+    color:var(--paper);
+    transition:transform .15s ease;
+  }
+  .linkrow:hover{transform:translateX(3px);}
+  .linkrow .ico{
+    font-family:'Anton', sans-serif; font-size:12px; color:var(--ink); background:var(--gold);
+    width:24px; height:24px; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .linkrow .txt strong{display:block; font-size:16px; font-weight:700;}
+  .linkrow .txt span{display:block; font-size:12.5px; color:#9A9AA5;}
+
+  .notes{display:flex; flex-direction:column; gap:8px;}
+  .note{
+    background:var(--panel-2); border:1px solid var(--edge); border-left:5px solid var(--gold);
+    padding:13px 16px; font-size:16px; display:flex; gap:10px;
+  }
+  .note .mark{font-family:'Anton', sans-serif; color:var(--gold); flex-shrink:0; font-size:13px;}
+
+  /* ---------- qr ---------- */
+  .qrbox{
+    background:var(--paper); color:var(--ink); padding:26px; text-align:center;
+    clip-path:polygon(0 0, 96% 0, 100% 10%, 100% 100%, 4% 100%, 0 90%);
+  }
+  .qrbox input{
+    width:100%; font-family:'Space Mono', monospace; font-size:12.5px;
+    padding:10px 12px; border:2px solid var(--ink); background:#fff; color:var(--ink); margin-bottom:14px;
+  }
+  #qrcode{display:inline-flex; align-items:center; justify-content:center; background:#fff; padding:14px; border:2px solid var(--ink); min-height:172px; min-width:172px;}
+  .qrhint{font-family:'Space Mono', monospace; font-size:11px; color:#555; margin-top:12px;}
+  .btn-row{display:flex; gap:8px; justify-content:center; flex-wrap:wrap;}
+  .btn{
+    font-family:'Anton', sans-serif; font-size:12px; letter-spacing:.03em; text-transform:uppercase;
+    background:var(--crimson); color:var(--paper); border:none; padding:9px 16px; cursor:pointer;
+  }
+  .btn.alt{background:var(--ink);}
+  .btn:hover{filter:brightness(1.15);}
+
+  footer{
+    text-align:center; color:#7A7A88; font-family:'Space Mono', monospace; font-size:10px;
+    letter-spacing:.12em; margin-top:50px; text-transform:uppercase;
+  }
+
+  @media (max-width:520px){
+    .mini-grid{grid-template-columns:1fr;}
+    .entry-sub{display:none;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <span>Cerebro Archive Access</span>
+    <span>One-Off Anthology</span>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="stripe"></div>
+    <div class="eyebrow">A Steam Anthology</div>
+    <h1 class="title">Mutants on<br>Steam</h1>
+    <h2 class="subhead">Thirty Years, Five Cabinets</h2>
+    <p class="subtitle">From a 1992 arcade cabinet to a 2024 hero shooter — every corner of the mutant roster currently playable on Steam.</p>
+    <div class="flag-row">
+      <span class="flag">1992 — 2026</span>
+      <span class="flag gold">5 Titles</span>
+      <span class="flag">Anthology · One-Off</span>
+    </div>
+
+    <div class="scene">
+      <svg viewBox="0 0 720 190" width="100%" style="display:block;">
+        <rect width="720" height="190" fill="#0A0C16"/>
+        <g fill="#C4262E" opacity=".5">
+          <circle cx="40" cy="30" r="2"/><circle cx="60" cy="30" r="2"/><circle cx="80" cy="30" r="2"/>
+          <circle cx="640" cy="160" r="2"/><circle cx="660" cy="160" r="2"/><circle cx="680" cy="160" r="2"/>
+        </g>
+        <!-- radar/cerebro rings motif -->
+        <circle cx="360" cy="95" r="70" fill="none" stroke="#E8B23A" stroke-width="1.5" opacity=".5"/>
+        <circle cx="360" cy="95" r="46" fill="none" stroke="#E8B23A" stroke-width="1.5" opacity=".4"/>
+        <circle cx="360" cy="95" r="22" fill="none" stroke="#E8B23A" stroke-width="1.5" opacity=".3"/>
+        <circle cx="360" cy="95" r="4" fill="#C4262E"/>
+        <!-- five small nodes for five titles -->
+        <circle cx="230" cy="60" r="4" fill="#EFE9DA"/>
+        <circle cx="470" cy="55" r="4" fill="#EFE9DA"/>
+        <circle cx="500" cy="140" r="4" fill="#EFE9DA"/>
+        <circle cx="250" cy="145" r="4" fill="#EFE9DA"/>
+        <circle cx="360" cy="30" r="4" fill="#EFE9DA"/>
+        <g stroke="#EFE9DA" stroke-width="1" opacity=".35">
+          <line x1="360" y1="95" x2="230" y2="60"/>
+          <line x1="360" y1="95" x2="470" y2="55"/>
+          <line x1="360" y1="95" x2="500" y2="140"/>
+          <line x1="360" y1="95" x2="250" y2="145"/>
+          <line x1="360" y1="95" x2="360" y2="30"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- FILE 01 — THE COLLECTION -->
+  <div class="entry">
+    <div class="entry-head">
+      <span class="entry-num">FILE 01</span>
+      <span class="entry-title">The Collection</span>
+      <span class="entry-sub">Why These<br>Five</span>
+    </div>
+    <div class="dossier">
+      <p>The X-Men have had one of gaming's strangest publishing histories: decades of beloved console and arcade titles that, thanks to shifting film and licensing deals, mostly never made it to PC — and several that did have since vanished from digital storefronts entirely. What's actually purchasable on Steam right now is a mix of arcade-era rereleases and modern titles that fold X-Men characters into a wider Marvel roster rather than headlining a game on their own.</p>
+      <p>This is a snapshot of that mix — from the genre-defining 1992 arcade brawler to the current live-service hero shooter — rather than a complete history of every X-Men game ever made.</p>
+    </div>
+    <div class="dossier">
+      <h3>A Rough Timeline</h3>
+      <ul class="tl">
+        <li><span class="yr">1992</span><span class="ev">X-Men: The Arcade Game defines the team beat-'em-up formula in arcades.</span></li>
+        <li><span class="yr">1996</span><span class="ev">X-Men vs. Street Fighter kicks off Capcom's mutant-fueled crossover fighting era.</span></li>
+        <li><span class="yr">2013</span><span class="ev">Marvel Puzzle Quest launches free-to-play, leaning hard on its X-Men roster from day one.</span></li>
+        <li><span class="yr">2022</span><span class="ev">Marvel's Midnight Suns folds Wolverine and Magik into a tactical, card-driven squad.</span></li>
+        <li><span class="yr">2024</span><span class="ev">Marvel vs. Capcom Fighting Collection and Marvel Rivals both arrive, reviving the arcade classics and the roster alike.</span></li>
+        <li><span class="yr">2026</span><span class="ev">MARVEL MaXimum Collection brings the original 1992 X-Men arcade cabinet back with online play.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FILE 02 — THE ROSTER -->
+  <div class="entry">
+    <div class="entry-head">
+      <span class="entry-num">FILE 02</span>
+      <span class="entry-title">The Roster</span>
+      <span class="entry-sub">Game by<br>Game</span>
+    </div>
+
+    <!-- 1 -->
+    <div class="chapter">
+      <div class="chapter-head">
+        <div>
+          <span class="chapter-tag">Arcade Revival</span>
+          <h3 class="chapter-title">MARVEL vs. CAPCOM Fighting Collection: Arcade Classics</h3>
+        </div>
+        <span class="chapter-year">2024 · Capcom</span>
+      </div>
+      <div class="chapter-body">
+        <p>Seven arcade classics in one collection, including X-Men: Children of the Atom and X-Men vs. Street Fighter — the games that put mutants at the center of Capcom's crossover fighting legacy, playable online for the first time.</p>
+        <div class="mini-grid">
+          <div class="mini-spec"><span class="k">Includes</span><span class="v">7 arcade titles, incl. 2 X-Men fighters</span></div>
+          <div class="mini-spec"><span class="k">Genre</span><span class="v">2D fighting collection</span></div>
+        </div>
+        <div class="mini-scores">
+          <div class="mini-chip"><span class="num">86</span><span class="src">Metacritic</span></div>
+          <div class="mini-chip"><span class="num">93%</span><span class="src">Steam Pos.</span></div>
+        </div>
+        <div class="video-frame">
+          <div class="vlabel"><strong>Launch Trailer</strong></div>
+          <div class="video-embed">
+            <iframe src="https://www.youtube.com/embed/mZxoq_TmGp4" title="Marvel vs. Capcom Fighting Collection Launch Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+        </div>
+        <button class="chapter-qr-btn" onclick="setQR('https://store.steampowered.com/app/2634890/MARVEL_vs_CAPCOM_Fighting_Collection_Arcade_Classics/')">Use This Game's Steam Page ↓</button>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="chapter crim">
+      <div class="chapter-head">
+        <div>
+          <span class="chapter-tag">Arcade Revival</span>
+          <h3 class="chapter-title">MARVEL MaXimum Collection</h3>
+        </div>
+        <span class="chapter-year">2026 · Limited Run Games</span>
+      </div>
+      <div class="chapter-body">
+        <p>A curated dive into Marvel's early gaming legacy, headlined by X-Men: The Arcade Game with rollback netcode for up to six players — plus box art scans, manuals, and chiptune scores from the era.</p>
+        <div class="mini-grid">
+          <div class="mini-spec"><span class="k">Headliner</span><span class="v">X-Men: The Arcade Game (1992)</span></div>
+          <div class="mini-spec"><span class="k">Multiplayer</span><span class="v">Up to 6 players online</span></div>
+        </div>
+        <div class="mini-scores">
+          <div class="mini-chip"><span class="num">77%</span><span class="src">Steam Pos.</span></div>
+        </div>
+        <div class="video-frame">
+          <div class="vlabel"><strong>Launch Trailer</strong></div>
+          <div class="video-embed">
+            <iframe src="https://www.youtube.com/embed/dtWwQuAjpI0" title="Marvel MaXimum Collection Launch Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+        </div>
+        <button class="chapter-qr-btn" onclick="setQR('https://store.steampowered.com/app/3931060/MARVEL_MaXimum_Collection/')">Use This Game's Steam Page ↓</button>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="chapter">
+      <div class="chapter-head">
+        <div>
+          <span class="chapter-tag">Live Service</span>
+          <h3 class="chapter-title">MARVEL Puzzle Quest</h3>
+        </div>
+        <span class="chapter-year">2013 · D3 Go</span>
+      </div>
+      <div class="chapter-body">
+        <p>A free-to-play match-3 RPG that's leaned on its X-Men roster since launch — Wolverine, Storm, and Cyclops are staples of the tactical squads players build to climb its seasonal tournaments.</p>
+        <div class="mini-grid">
+          <div class="mini-spec"><span class="k">Price</span><span class="v">Free to play</span></div>
+          <div class="mini-spec"><span class="k">Genre</span><span class="v">Match-3 hero RPG</span></div>
+        </div>
+        <div class="video-frame">
+          <div class="vlabel"><strong>Official Trailer</strong></div>
+          <div class="video-embed">
+            <iframe src="https://www.youtube.com/embed/ymgnvcb3mDY" title="Marvel Puzzle Quest Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+        </div>
+        <button class="chapter-qr-btn" onclick="setQR('https://store.steampowered.com/app/234330/MARVEL_Puzzle_Quest/')">Use This Game's Steam Page ↓</button>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="chapter crim">
+      <div class="chapter-head">
+        <div>
+          <span class="chapter-tag">Tactical RPG</span>
+          <h3 class="chapter-title">Marvel's Midnight Suns</h3>
+        </div>
+        <span class="chapter-year">2022 · Firaxis Games</span>
+      </div>
+      <div class="chapter-body">
+        <p>A card-driven tactics game where Wolverine and Magik join a squad of supernatural heroes fighting a demonic threat — X-Men grit dropped into Firaxis's turn-based strategy sensibilities.</p>
+        <div class="mini-grid">
+          <div class="mini-spec"><span class="k">X-Men Cast</span><span class="v">Wolverine, Magik</span></div>
+          <div class="mini-spec"><span class="k">Genre</span><span class="v">Tactical RPG</span></div>
+        </div>
+        <div class="video-frame">
+          <div class="vlabel"><strong>Official Launch Trailer</strong></div>
+          <div class="video-embed">
+            <iframe src="https://www.youtube.com/embed/kTHMbNo4-n8" title="Marvel's Midnight Suns Official Launch Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+        </div>
+        <button class="chapter-qr-btn" onclick="setQR('https://store.steampowered.com/app/368260/Marvels_Midnight_Suns/')">Use This Game's Steam Page ↓</button>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="chapter">
+      <div class="chapter-head">
+        <div>
+          <span class="chapter-tag">Hero Shooter</span>
+          <h3 class="chapter-title">Marvel Rivals</h3>
+        </div>
+        <span class="chapter-year">2024 · NetEase Games</span>
+      </div>
+      <div class="chapter-body">
+        <p>A free-to-play team shooter with one of the deepest X-Men benches of any current Marvel game — Magneto, Storm, Psylocke, Wolverine, and Rogue all play with distinct kits in destructible arenas.</p>
+        <div class="mini-grid">
+          <div class="mini-spec"><span class="k">Price</span><span class="v">Free to play</span></div>
+          <div class="mini-spec"><span class="k">X-Men Cast</span><span class="v">Magneto, Storm, Psylocke, Wolverine, Rogue</span></div>
+        </div>
+        <div class="mini-scores">
+          <div class="mini-chip"><span class="num">76%</span><span class="src">Steam Pos.</span></div>
+        </div>
+        <div class="video-frame">
+          <div class="vlabel"><strong>Official Launch Trailer</strong></div>
+          <div class="video-embed">
+            <iframe src="https://www.youtube.com/embed/hrjUVSECOMU" title="Marvel Rivals Official Launch Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+        </div>
+        <button class="chapter-qr-btn" onclick="setQR('https://store.steampowered.com/app/2767030/Marvel_Rivals/')">Use This Game's Steam Page ↓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILE 03 — MISSING FROM THE ARCHIVE -->
+  <div class="entry">
+    <div class="entry-head">
+      <span class="entry-num">FILE 03</span>
+      <span class="entry-title">Missing From The Archive</span>
+      <span class="entry-sub">Notable<br>Absences</span>
+    </div>
+    <div class="notes">
+      <div class="note"><span class="mark">01</span>Marvel: Ultimate Alliance and its sequel — featuring X-Men Legends-style squads — were delisted from Steam and remain unavailable to purchase.</div>
+      <div class="note"><span class="mark">02</span>X-Men Legends and X-Men Legends II never released on PC at all; they remain console- and PSP-only to this day.</div>
+      <div class="note"><span class="mark">03</span>X-Men Origins: Wolverine never had an official Steam release, despite occasionally appearing as a listing on third-party key resellers.</div>
+    </div>
+  </div>
+
+  <!-- QR TOOL -->
+  <div class="entry">
+    <div class="entry-head">
+      <span class="entry-num">FILE 04</span>
+      <span class="entry-title">Print &amp; Display</span>
+    </div>
+    <div class="qrbox">
+      <input id="qrurl" type="text" value="https://store.steampowered.com/app/2634890/MARVEL_vs_CAPCOM_Fighting_Collection_Arcade_Classics/">
+      <div class="btn-row">
+        <button class="btn" onclick="makeQR()">Generate QR Code</button>
+        <button class="btn alt" onclick="resetDefault()">Reset to First Title</button>
+      </div>
+      <div id="qrcode"></div>
+      <div class="qrhint">Use a title's "Use This Game's Steam Page" button above to point the code at that game.</div>
+    </div>
+  </div>
+
+  <footer>One-off anthology · Not part of the ongoing collection</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  let qr = null;
+  function makeQR(){
+    const url = document.getElementById('qrurl').value.trim();
+    const box = document.getElementById('qrcode');
+    box.innerHTML = '';
+    if(!url){ box.innerHTML = '<span style="font-family:\'Space Mono\',monospace;font-size:11px;color:#333;">Enter a URL first</span>'; return; }
+    qr = new QRCode(box, { text:url, width:160, height:160, colorDark:'#0F1220', colorLight:'#ffffff' });
+  }
+  function resetDefault(){
+    document.getElementById('qrurl').value = 'https://store.steampowered.com/app/2634890/MARVEL_vs_CAPCOM_Fighting_Collection_Arcade_Classics/';
+    makeQR();
+  }
+  function setQR(url){
+    document.getElementById('qrurl').value = url;
+    makeQR();
+    document.getElementById('qrcode').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  window.addEventListener('DOMContentLoaded', makeQR);
+</script>
+</body>
+</html>

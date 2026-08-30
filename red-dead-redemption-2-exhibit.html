@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wanted — Red Dead Redemption 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rye&family=Vollkorn:ital,wght@0,400;0,600;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#E4D3A7;
+    --paper-dark:#D2BD8A;
+    --ink:#2B1D12;
+    --ink-soft:#5C4A34;
+    --rust:#7A2E1D;
+    --rust-deep:#571F13;
+    --brass:#8C6A2E;
+    --void:#150F09;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse at 15% 0%, #241a10 0%, transparent 55%),
+      radial-gradient(ellipse at 90% 90%, #1a120a 0%, transparent 55%),
+      var(--void);
+    color:var(--ink);
+    font-family:'Vollkorn', serif;
+    font-size:17px;
+    line-height:1.58;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:0 16px 90px;}
+
+  .topbar{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 4px 10px;
+    font-family:'Courier Prime', monospace;
+    font-weight:700;
+    font-size:10.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--paper-dark);
+    border-bottom:2px solid var(--rust);
+  }
+
+  /* ---------- hero: wanted poster ---------- */
+  .hero{
+    position:relative;
+    margin:24px 0 30px;
+    background:var(--paper);
+    padding:34px 24px 26px;
+    border:6px double var(--ink);
+    box-shadow:0 20px 45px -18px rgba(0,0,0,.75);
+    text-align:center;
+  }
+  .badge{display:block; margin:0 auto 14px;}
+  .eyebrow{
+    font-family:'Courier Prime', monospace;
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--rust-deep);
+    margin-bottom:8px;
+  }
+  h1.title{
+    font-family:'Rye', serif;
+    font-size:clamp(38px, 10vw, 60px);
+    line-height:1.02;
+    margin:6px 0 4px;
+    color:var(--ink);
+    text-transform:uppercase;
+  }
+  h2.subhead{
+    font-family:'Rye', serif;
+    font-size:18px;
+    color:var(--rust-deep);
+    margin:0 0 16px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+  }
+  .rule{
+    width:70%; height:2px; margin:14px auto; background:var(--ink); opacity:.5;
+  }
+  .subtitle{
+    font-style:italic;
+    font-size:17px;
+    color:var(--ink-soft);
+    max-width:44ch;
+    margin:0 auto 20px;
+  }
+  .flag-row{display:flex; gap:8px; flex-wrap:wrap; justify-content:center;}
+  .flag{
+    font-family:'Courier Prime', monospace;
+    font-weight:700;
+    font-size:10.5px;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    border:1px solid var(--ink-soft);
+    color:var(--ink-soft);
+    padding:5px 11px;
+  }
+  .flag.rust{border-color:var(--rust); color:var(--rust-deep);}
+
+  .scene{margin-top:22px; border:2px solid var(--ink); overflow:hidden;}
+
+  /* ---------- entries ---------- */
+  .entry{margin:44px 0;}
+  .entry-head{
+    display:flex; align-items:baseline; gap:12px;
+    padding-bottom:9px; margin-bottom:16px;
+    border-bottom:2px solid var(--rust);
+  }
+  .entry-num{
+    font-family:'Courier Prime', monospace;
+    font-weight:700;
+    font-size:11px;
+    color:var(--rust);
+    letter-spacing:.08em;
+  }
+  .entry-title{
+    font-family:'Rye', serif;
+    font-size:24px;
+    color:var(--paper);
+    text-transform:uppercase;
+  }
+  .entry-sub{
+    margin-left:auto;
+    font-family:'Courier Prime', monospace;
+    font-size:9.5px;
+    color:var(--paper-dark);
+    letter-spacing:.06em;
+    text-align:right;
+  }
+
+  .card{
+    background:var(--paper);
+    padding:20px 22px 18px;
+    margin-bottom:12px;
+    box-shadow:0 12px 26px -14px rgba(0,0,0,.55);
+  }
+  .card p{margin:0 0 12px; color:var(--ink); font-size:17px;}
+  .card p:last-child{margin-bottom:0;}
+  .card h3{
+    font-family:'Rye', serif;
+    font-size:16px;
+    text-transform:uppercase;
+    letter-spacing:.02em;
+    color:var(--rust-deep);
+    margin:0 0 12px;
+  }
+
+  .tl{list-style:none; margin:0; padding:0;}
+  .tl li{
+    display:grid; grid-template-columns:64px 1fr; gap:14px;
+    padding:11px 0;
+    border-top:1px dashed rgba(43,29,18,.25);
+  }
+  .tl li:first-child{border-top:none; padding-top:0;}
+  .tl .yr{font-family:'Courier Prime', monospace; font-weight:700; font-size:13px; color:var(--rust-deep);}
+  .tl .ev{font-size:16px; color:var(--ink);}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .spec{background:var(--paper-dark); padding:14px 16px;}
+  .spec .k{
+    font-family:'Courier Prime', monospace;
+    font-weight:700;
+    font-size:10px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--rust-deep);
+    display:block;
+    margin-bottom:6px;
+  }
+  .spec .v{font-size:15.5px; color:var(--ink);}
+
+  .linklist{display:flex; flex-direction:column; gap:8px;}
+  .linkrow{
+    display:flex; align-items:center; gap:12px;
+    background:var(--paper);
+    padding:13px 16px;
+    text-decoration:none;
+    color:var(--ink);
+    box-shadow:0 10px 22px -14px rgba(0,0,0,.5);
+    transition:transform .15s ease;
+  }
+  .linkrow:hover{transform:translateX(3px);}
+  .linkrow .ico{
+    font-family:'Courier Prime', monospace;
+    font-weight:700;
+    font-size:12px;
+    color:var(--paper);
+    background:var(--rust-deep);
+    width:24px; height:24px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .linkrow .txt strong{display:block; font-size:15.5px; font-weight:600;}
+  .linkrow .txt span{display:block; font-size:12.5px; color:var(--ink-soft);}
+  .linkrow.placeholder{border:1.5px dashed var(--ink-soft); box-shadow:none; background:rgba(228,211,167,.5);}
+  .linkrow.placeholder .ico{background:transparent; border:1.5px dashed var(--ink-soft); color:var(--ink-soft);}
+  .linkrow.video .ico{background:var(--brass);}
+
+  .video-frame{background:var(--paper); padding:12px 12px 10px; margin-bottom:12px;}
+  .vlabel{font-family:'Courier Prime', monospace; font-weight:700; font-size:11px; letter-spacing:.03em; color:var(--ink-soft); margin-bottom:10px; text-transform:uppercase;}
+  .vlabel strong{color:var(--ink);}
+  .video-embed{position:relative; width:100%; padding-top:56.25%; background:#000;}
+  .video-embed iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+
+  .score-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;}
+  .score-chip{background:var(--paper-dark); padding:8px 12px; text-align:center; min-width:62px;}
+  .score-chip .num{font-family:'Rye', serif; font-size:19px; color:var(--rust-deep); display:block; line-height:1;}
+  .score-chip .src{font-family:'Courier Prime', monospace; font-weight:700; font-size:8px; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); display:block; margin-top:4px;}
+
+  .notes{display:flex; flex-direction:column; gap:8px;}
+  .note{background:var(--paper); border-left:4px solid var(--brass); padding:13px 16px; font-size:16px; display:flex; gap:10px; box-shadow:0 10px 22px -14px rgba(0,0,0,.5);}
+  .note .mark{font-family:'Courier Prime', monospace; font-weight:700; color:var(--rust-deep); flex-shrink:0; font-size:12.5px;}
+
+  .qrbox{background:var(--paper); padding:26px; text-align:center;}
+  .qrbox input{
+    width:100%; font-family:'Courier Prime', monospace; font-size:12.5px;
+    padding:10px 12px; border:2px solid var(--ink); background:#fff; color:var(--ink); margin-bottom:14px;
+  }
+  #qrcode{display:inline-flex; align-items:center; justify-content:center; background:#fff; padding:14px; min-height:172px; min-width:172px;}
+  .qrhint{font-family:'Courier Prime', monospace; font-size:10px; color:var(--ink-soft); margin-top:12px;}
+  .btn{
+    font-family:'Courier Prime', monospace; font-weight:700; font-size:11px; letter-spacing:.05em; text-transform:uppercase;
+    background:var(--rust-deep); color:var(--paper); border:none; padding:9px 18px; cursor:pointer;
+  }
+  .btn.alt{background:var(--ink);}
+  .btn:hover{filter:brightness(1.15);}
+
+  footer{text-align:center; color:var(--paper-dark); font-family:'Courier Prime', monospace; font-size:10px; letter-spacing:.1em; margin-top:50px; opacity:.7;}
+
+  @media (max-width:520px){
+    .grid2{grid-template-columns:1fr;}
+    .entry-sub{display:none;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <span>Van der Linde Gang Ledger</span>
+    <span>Digital Library · Vol. VI</span>
+  </div>
+
+  <!-- HERO: WANTED POSTER -->
+  <div class="hero">
+    <svg class="badge" width="60" height="60" viewBox="0 0 60 60">
+      <path d="M30 4 L36 20 L53 20 L39 30 L45 47 L30 37 L15 47 L21 30 L7 20 L24 20 Z" fill="none" stroke="#8C6A2E" stroke-width="2.2"/>
+      <circle cx="30" cy="30" r="6" fill="none" stroke="#8C6A2E" stroke-width="1.6"/>
+    </svg>
+    <div class="eyebrow">Wanted — Dead or Alive</div>
+    <h1 class="title">Red Dead<br>Redemption 2</h1>
+    <h2 class="subhead">America, 1899</h2>
+    <div class="rule"></div>
+    <p class="subtitle">An outlaw gang running out of road, a dying way of life, and one man's reckoning with loyalty, honor, and the modern age closing in.</p>
+    <div class="flag-row">
+      <span class="flag">Rockstar Games</span>
+      <span class="flag rust">87M+ Copies Sold</span>
+      <span class="flag">3rd Best-Selling Game Ever</span>
+    </div>
+
+    <div class="scene">
+      <svg viewBox="0 0 720 200" width="100%" style="display:block;">
+        <rect width="720" height="200" fill="#150F09"/>
+        <defs>
+          <linearGradient id="duskfade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#7A2E1D" stop-opacity=".4"/>
+            <stop offset="1" stop-color="#150F09"/>
+          </linearGradient>
+        </defs>
+        <rect width="720" height="200" fill="url(#duskfade)"/>
+        <circle cx="580" cy="46" r="34" fill="#E4D3A7" opacity=".55"/>
+        <!-- mesa silhouettes -->
+        <polygon points="0,150 60,90 110,150" fill="#231911"/>
+        <polygon points="140,150 220,70 300,150" fill="#1c140d"/>
+        <polygon points="330,150 380,110 430,150" fill="#231911"/>
+        <path d="M0 175 C150 155 300 190 450 165 C560 148 640 175 720 160 V200 H0 Z" fill="#150F09"/>
+        <!-- lone rider on horseback -->
+        <g transform="translate(400,140)" opacity=".9">
+          <ellipse cx="0" cy="10" rx="20" ry="7" fill="#0F0A06"/>
+          <path d="M-18 10 Q-16 -4 -6 -6 L2 -6 Q10 -4 12 10" fill="#0F0A06"/>
+          <path d="M-2 -6 L-2 -20 L4 -20 L4 -6" fill="#0F0A06"/>
+          <circle cx="1" cy="-23" r="3" fill="#0F0A06"/>
+        </g>
+        <!-- cacti -->
+        <g fill="#231911">
+          <rect x="120" y="130" width="6" height="22"/>
+          <rect x="112" y="138" width="6" height="10"/>
+          <rect x="600" y="150" width="5" height="18"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ENTRY I — ORIGINS -->
+  <div class="entry">
+    <div class="entry-head">
+      <span class="entry-num">LEDGER 01</span>
+      <span class="entry-title">Origins</span>
+      <span class="entry-sub">Case File &amp;<br>Timeline</span>
+    </div>
+    <div class="card">
+      <p>Set twelve years before the original Red Dead Redemption, RDR2 casts players as Arthur Morgan, a senior enforcer in Dutch van der Linde's outlaw gang. As federal agents and bounty hunters close in and the frontier itself gives way to the modern age, Arthur is forced to choose between loyalty to the gang that raised him and his own fraying conscience.</p>
+      <p>Rockstar's follow-up to the original 2010 game became one of the most acclaimed releases in the medium's history — winning over 175 Game of the Year awards and, remarkably, continuing to sell millions of copies a year even without a current-gen console version.</p>
+    </div>
+    <div class="card">
+      <h3>Case Timeline</h3>
+      <ul class="tl">
+        <li><span class="yr">2016</span><span class="ev">Rockstar reveals Red Dead Redemption 2 with its first teaser trailer.</span></li>
+        <li><span class="yr">2018</span><span class="ev">Launches October 26 on PS4 and Xbox One to sweeping critical acclaim.</span></li>
+        <li><span class="yr">2019</span><span class="ev">Arrives on PC in November with expanded graphical options.</span></li>
+        <li><span class="yr">2022</span><span class="ev">Crosses 50 million copies sold.</span></li>
+        <li><span class="yr">2025</span><span class="ev">Passes 79 million copies, overtaking Mario Kart 8 on the all-time sales chart.</span></li>
+        <li><span class="yr">2026</span><span class="ev">Surpasses 87 million copies — the third best-selling video game ever made.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ENTRY II — LOADOUT -->
+  <div class="entry">
+    <div class="entry-head">
+      <span class="entry-num">LEDGER 02</span>
+      <span class="entry-title">Loadout</span>
+      <span class="entry-sub">Specifications</span>
+    </div>
+    <div class="grid2">
+      <div class="spec"><span class="k">Developer</span><span class="v">Rockstar Games</span></div>
+      <div class="spec"><span class="k">Setting</span><span class="v">American frontier, 1899</span></div>
+      <div class="spec"><span class="k">Protagonist</span><span class="v">Arthur Morgan</span></div>
+      <div class="spec"><span class="k">Prequel To</span><span class="v">Red Dead Redemption (2010)</span></div>
+      <div class="spec"><span class="k">Key System</span><span class="v">Honor — shapes story &amp; world reaction</span></div>
+      <div class="spec"><span class="k">Platforms</span><span class="v">PC, PS4, Xbox One</span></div>
+    </div>
+  </div>
+
+  <!-- ENTRY III — ARCHIVE -->
+  <div class="entry">
+    <div class="entry-head">
+      <span class="entry-num">LEDGER 03</span>
+      <span class="entry-title">Archive</span>
+      <span class="entry-sub">Media &amp;<br>Reception</span>
+    </div>
+    <div class="linklist">
+      <a class="linkrow" href="https://www.rockstargames.com/reddeadredemption2" target="_blank" rel="noopener">
+        <span class="ico">↗</span>
+        <span class="txt"><strong>Official Site</strong><span>rockstargames.com/reddeadredemption2</span></span>
+      </a>
+      <a class="linkrow" href="https://reddead.fandom.com/" target="_blank" rel="noopener">
+        <span class="ico">↗</span>
+        <span class="txt"><strong>Red Dead Wiki</strong><span>Characters, missions &amp; lore reference</span></span>
+      </a>
+    </div>
+
+    <div class="video-frame" style="margin-top:12px;">
+      <div class="vlabel"><strong>Official Launch Trailer</strong> — 2018</div>
+      <div class="video-embed">
+        <iframe src="https://www.youtube.com/embed/HVRzx17WHVk" title="Red Dead Redemption 2 Launch Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="linklist">
+      <a class="linkrow placeholder">
+        <span class="ico">＋</span>
+        <span class="txt"><strong>Add your favorite playthrough</strong><span>Swap this href for a YouTube link</span></span>
+      </a>
+    </div>
+
+    <div class="card" style="margin-top:12px;">
+      <h3>Critical Reception</h3>
+      <div class="score-row">
+        <div class="score-chip"><span class="num">96</span><span class="src">Metacritic</span></div>
+        <div class="score-chip"><span class="num">175+</span><span class="src">GOTY Awards</span></div>
+        <div class="score-chip"><span class="num">250+</span><span class="src">Perfect Scores</span></div>
+        <div class="score-chip"><span class="num">87M+</span><span class="src">Copies Sold</span></div>
+      </div>
+      <p>Holds a 96 on Metacritic and is routinely ranked among the greatest games ever made — recognition that's held steady for nearly a decade since release.</p>
+    </div>
+    <div class="linklist">
+      <a class="linkrow" href="https://www.metacritic.com/game/red-dead-redemption-2/" target="_blank" rel="noopener">
+        <span class="ico">↗</span>
+        <span class="txt"><strong>Metacritic Page</strong><span>Full critic &amp; user scores</span></span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ENTRY IV — GUIDES & TIPS -->
+  <div class="entry">
+    <div class="entry-head">
+      <span class="entry-num">LEDGER 04</span>
+      <span class="entry-title">Guides &amp; Tips</span>
+      <span class="entry-sub">Outlaw Notes</span>
+    </div>
+    <div class="notes">
+      <div class="note"><span class="mark">01</span>Don't rush Chapter 2 — it's the game's soft tutorial. Hunt, fish, and explore Horseshoe Overlook before the story picks up pace.</div>
+      <div class="note"><span class="mark">02</span>Loot everything: dressers, corpses, cabinets. Stolen jewelry doesn't sell at general stores — look for Fences in Emerald Ranch, Saint Denis, and Van Horn.</div>
+      <div class="note"><span class="mark">03</span>Honor shapes more than dialogue — it gates certain missions and outcomes entirely, so decide early whether you're playing a righteous outlaw or a ruthless one.</div>
+      <div class="note"><span class="mark">04</span>Bond with your horse regularly; a fully bonded mount is calmer in combat, faster to recover stamina, and far less likely to throw you.</div>
+    </div>
+    <div class="linklist" style="margin-top:10px;">
+      <a class="linkrow video" href="https://www.rdr2.org/guides/single-player-index/" target="_blank" rel="noopener">
+        <span class="ico">✎</span>
+        <span class="txt"><strong>Written Guide — RDR2.org</strong><span>Full single-player guide index</span></span>
+      </a>
+      <a class="linkrow video" href="https://reddead.fandom.com/" target="_blank" rel="noopener">
+        <span class="ico">✎</span>
+        <span class="txt"><strong>Red Dead Wiki — Walkthrough</strong><span>Missions, honor &amp; collectibles</span></span>
+      </a>
+      <a class="linkrow placeholder">
+        <span class="ico">＋</span>
+        <span class="txt"><strong>Add a video guide</strong><span>Swap this href for a YouTube link</span></span>
+      </a>
+    </div>
+  </div>
+
+  <!-- QR TOOL -->
+  <div class="entry">
+    <div class="entry-head">
+      <span class="entry-num">LEDGER 05</span>
+      <span class="entry-title">Print &amp; Display</span>
+    </div>
+    <div class="qrbox">
+      <input id="qrurl" type="text" value="https://store.steampowered.com/app/1174180/Red_Dead_Redemption_2/">
+      <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
+        <button class="btn" onclick="makeQR()">Generate QR Code</button>
+        <button class="btn alt" onclick="useSteam()">Use Steam Page</button>
+      </div>
+      <div id="qrcode"></div>
+      <div class="qrhint">Defaults to the Steam store page. Swap in this exhibit's own hosted URL once it's live.</div>
+    </div>
+  </div>
+
+  <footer>Curated for a personal digital library · Vol. VI</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  let qr = null;
+  function makeQR(){
+    const url = document.getElementById('qrurl').value.trim();
+    const box = document.getElementById('qrcode');
+    box.innerHTML = '';
+    if(!url){ box.innerHTML = '<span style="font-family:\'Courier Prime\',monospace;font-size:11px;color:#333;">Enter a URL first</span>'; return; }
+    qr = new QRCode(box, { text:url, width:160, height:160, colorDark:'#2B1D12', colorLight:'#ffffff' });
+  }
+  function useSteam(){
+    document.getElementById('qrurl').value = 'https://store.steampowered.com/app/1174180/Red_Dead_Redemption_2/';
+    makeQR();
+  }
+  window.addEventListener('DOMContentLoaded', makeQR);
+</script>
+</body>
+</html>
