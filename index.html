@@ -7,199 +7,146 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,900;1,9..144,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --room: #171309;
-    --room-deep: #100D06;
-    --paper: #EFE3C8;
-    --ink: #2A2117;
-    --ink-soft: #5A4E3D;
-    --thread: #B7A67C;
+  :root{
+    --room:#171309;
+    --room-deep:#100D06;
+    --paper:#EFE3C8;
+    --ink:#2A2117;
+    --ink-soft:#5A4E3D;
+    --thread:#B7A67C;
   }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body {
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
     background:
       radial-gradient(ellipse at 20% -10%, #26301f 0%, transparent 55%),
       radial-gradient(ellipse at 90% 10%, #221a12 0%, transparent 50%),
       var(--room);
-    color: var(--paper);
-    font-family: 'Space Mono', monospace;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
+    color:var(--paper);
+    font-family:'Space Mono', monospace;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
   }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 40px 18px 90px; }
+  .wrap{max-width:760px; margin:0 auto; padding:40px 18px 90px;}
 
-  .wallhead {
-    text-align: center;
-    color: var(--thread);
-    font-size: 11px;
-    letter-spacing: .28em;
-    text-transform: uppercase;
-    padding-bottom: 10px;
-    opacity: .75;
+  .wallhead{
+    text-align:center;
+    color:var(--thread);
+    font-size:11px;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    padding-bottom:10px;
+    opacity:.75;
   }
-  .wallhead .div { margin: 10px auto 0; width: 40px; height: 1px; background: var(--thread); opacity: .5; }
+  .wallhead .div{margin:10px auto 0; width:40px; height:1px; background:var(--thread); opacity:.5;}
 
-  header.hero { text-align: center; margin: 24px 0 44px; }
-  h1 {
-    font-family: 'Fraunces', serif;
-    font-weight: 900;
-    font-size: clamp(36px, 9vw, 56px);
-    line-height: 1;
-    color: var(--paper);
-    margin: 0 0 12px;
+  header.hero{text-align:center; margin:24px 0 44px;}
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:900;
+    font-size:clamp(36px, 9vw, 56px);
+    line-height:1;
+    color:var(--paper);
+    margin:0 0 12px;
   }
-  .lede {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: 17px;
-    color: var(--thread);
-    max-width: 44ch;
-    margin: 0 auto;
-  }
-
-  .grid { display: flex; flex-direction: column; gap: 14px; }
-
-  /* Mini Banner Button Styling */
-  .game-button {
-    position: relative;
-    display: flex;
-    align-items: center;
-    min-height: 100px;
-    text-decoration: none;
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 10px 24px -10px rgba(0,0,0,.7);
-    border: 1px solid rgba(239, 227, 200, 0.15);
-    border-left: 6px solid var(--accent, #4C6B3B);
-    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  .lede{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:17px;
+    color:var(--thread);
+    max-width:44ch;
+    margin:0 auto;
   }
 
-  .game-button:hover {
-    transform: translateY(-2px) scale(1.008);
-    box-shadow: 0 16px 32px -8px rgba(0,0,0,.85), 0 0 20px -6px var(--accent, #4C6B3B);
-    border-color: rgba(239, 227, 200, 0.4);
+  .grid{display:flex; flex-direction:column; gap:16px;}
+
+  .card{
+    position:relative;
+    display:flex; flex-direction:column;
+    background:var(--paper);
+    color:var(--ink);
+    text-decoration:none;
+    border-radius:3px;
+    overflow:hidden;
+    box-shadow:0 14px 30px -16px rgba(0,0,0,.6);
+    border-left:6px solid var(--accent, #4C6B3B);
+    transition:transform .15s ease;
+  }
+  .card:hover{transform:translateX(4px);}
+
+  .card-banner{
+    position:relative;
+    height:110px;
+    overflow:hidden;
+    background:#0A0A0E;
+  }
+  .card-banner svg{
+    width:100%; height:100%; display:block;
+  }
+  .card-banner::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(0,0,0,0) 35%, var(--paper) 100%);
   }
 
-  /* SVG Background Layer */
-  .banner-bg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    pointer-events: none;
-    transition: transform .35s ease;
+  .card-content{
+    display:flex; align-items:center; gap:16px;
+    padding:14px 20px 18px;
   }
-  .banner-bg svg {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
+  .card .badge{
+    font-family:'Space Mono', monospace;
+    font-size:10px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent, #4C6B3B);
+    display:block;
+    margin-bottom:4px;
   }
-  .game-button:hover .banner-bg {
-    transform: scale(1.03);
+  .card h2{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:21px;
+    margin:0 0 4px;
+    color:var(--ink);
   }
-
-  /* Dark Vignette Overlay for Text Readability */
-  .banner-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    background: linear-gradient(90deg, 
-      rgba(10, 8, 5, 0.94) 0%, 
-      rgba(10, 8, 5, 0.82) 45%, 
-      rgba(10, 8, 5, 0.35) 80%,
-      rgba(10, 8, 5, 0.6) 100%
-    );
-    pointer-events: none;
+  .card p{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin:0;
   }
-
-  /* Button Content */
-  .button-content {
-    position: relative;
-    z-index: 3;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 18px 24px;
-    gap: 16px;
+  .card .arrow{
+    margin-left:auto;
+    font-size:20px;
+    color:var(--accent, #4C6B3B);
+    flex-shrink:0;
   }
 
-  .button-info {
-    max-width: 82%;
+  .card.stardew{--accent:#4C6B3B;}
+  .card.cyberpunk{--accent:#FF2E7E;}
+  .card.witcher{--accent:#A82E2E;}
+  .card.persona{--accent:#E0142C;}
+  .card.tombraider{--accent:#C9A227;}
+  .card.rdr2{--accent:#7A2E1D;}
+  .card.xmen{--accent:#C4262E;}
+
+  .section-label{
+    font-size:10px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--thread);
+    margin:36px 0 14px;
+    padding-bottom:8px;
+    border-bottom:1px solid rgba(183,166,124,.3);
   }
 
-  .badge {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--accent, #A8C686);
-    display: inline-block;
-    margin-bottom: 2px;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-  }
-
-  .game-button h2 {
-    font-family: 'Fraunces', serif;
-    font-weight: 700;
-    font-size: 22px;
-    line-height: 1.15;
-    margin: 0 0 3px;
-    color: #FFF;
-    text-shadow: 0 2px 6px rgba(0,0,0,0.9);
-  }
-
-  .game-button p {
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    color: #D6C9B0;
-    margin: 0;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.9);
-  }
-
-  .arrow {
-    font-size: 20px;
-    color: var(--accent, #EFE3C8);
-    flex-shrink: 0;
-    transition: transform .2s ease, color .2s ease;
-    text-shadow: 0 2px 6px rgba(0,0,0,0.8);
-  }
-
-  .game-button:hover .arrow {
-    transform: translateX(4px);
-    color: #FFF;
-  }
-
-  /* Theme Accents */
-  .game-button.stardew { --accent: #76A34F; }
-  .game-button.cyberpunk { --accent: #FF2E7E; }
-  .game-button.witcher { --accent: #C43B3B; }
-  .game-button.persona { --accent: #FF3B4E; }
-  .game-button.tombraider { --accent: #E5BA35; }
-  .game-button.rdr2 { --accent: #C75B3E; }
-  .game-button.xmen { --accent: #E84D3D; }
-
-  .section-label {
-    font-size: 10px;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    color: var(--thread);
-    margin: 36px 0 14px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(183,166,124,.3);
-  }
-
-  footer {
-    text-align: center;
-    color: var(--thread);
-    font-size: 10px;
-    letter-spacing: .1em;
-    opacity: .65;
-    margin-top: 56px;
+  footer{
+    text-align:center;
+    color:var(--thread);
+    font-size:10px;
+    letter-spacing:.1em;
+    opacity:.65;
+    margin-top:56px;
   }
 </style>
 </head>
@@ -215,8 +162,8 @@
 
   <div class="section-label">Exhibits</div>
   <div class="grid">
-    <a class="game-button stardew" href="stardew-valley-exhibit.html">
-      <div class="banner-bg">
+    <a class="card stardew" href="stardew-valley-exhibit.html">
+      <div class="card-banner">
         <svg viewBox="0 0 400 110" preserveAspectRatio="xMidYMid slice">
           <defs>
             <linearGradient id="sky-sd" x1="0" y1="0" x2="0" y2="1">
@@ -253,9 +200,8 @@
           </g>
         </svg>
       </div>
-      <div class="banner-overlay"></div>
-      <div class="button-content">
-        <div class="button-info">
+      <div class="card-content">
+        <div>
           <span class="badge">Case 01</span>
           <h2>Stardew Valley</h2>
           <p>Farm life sim — solo-developed, est. 2016</p>
@@ -264,8 +210,8 @@
       </div>
     </a>
 
-    <a class="game-button cyberpunk" href="cyberpunk-2077-exhibit.html">
-      <div class="banner-bg">
+    <a class="card cyberpunk" href="cyberpunk-2077-exhibit.html">
+      <div class="card-banner">
         <svg viewBox="0 0 400 110" preserveAspectRatio="xMidYMid slice">
           <defs>
             <linearGradient id="sky-cp" x1="0" y1="0" x2="0" y2="1">
@@ -303,9 +249,8 @@
           <ellipse cx="205" cy="78" rx="100" ry="26" fill="#FF2E7E" opacity=".22" filter="url(#haze-cp)"/>
         </svg>
       </div>
-      <div class="banner-overlay"></div>
-      <div class="button-content">
-        <div class="button-info">
+      <div class="card-content">
+        <div>
           <span class="badge">Node 02</span>
           <h2>Cyberpunk 2077</h2>
           <p>Open-world action RPG — Night City, est. 2020</p>
@@ -314,8 +259,8 @@
       </div>
     </a>
 
-    <a class="game-button witcher" href="witcher-3-exhibit.html">
-      <div class="banner-bg">
+    <a class="card witcher" href="witcher-3-exhibit.html">
+      <div class="card-banner">
         <svg viewBox="0 0 400 110" preserveAspectRatio="xMidYMid slice">
           <defs>
             <linearGradient id="sky-wc" x1="0" y1="0" x2="0" y2="1">
@@ -346,9 +291,8 @@
           </g>
         </svg>
       </div>
-      <div class="banner-overlay"></div>
-      <div class="button-content">
-        <div class="button-info">
+      <div class="card-content">
+        <div>
           <span class="badge">Vol. III</span>
           <h2>The Witcher 3: Wild Hunt</h2>
           <p>Dark fantasy action RPG — est. 2015</p>
@@ -357,8 +301,8 @@
       </div>
     </a>
 
-    <a class="game-button persona" href="persona-5-royal-exhibit.html">
-      <div class="banner-bg">
+    <a class="card persona" href="persona-5-royal-exhibit.html">
+      <div class="card-banner">
         <svg viewBox="0 0 400 110" preserveAspectRatio="xMidYMid slice">
           <defs>
             <linearGradient id="sky-p5" x1="0" y1="0" x2="0" y2="1">
@@ -387,9 +331,8 @@
           </g>
         </svg>
       </div>
-      <div class="banner-overlay"></div>
-      <div class="button-content">
-        <div class="button-info">
+      <div class="card-content">
+        <div>
           <span class="badge">File 04</span>
           <h2>Persona 5 Royal</h2>
           <p>Turn-based JRPG / social sim — est. 2019</p>
@@ -398,8 +341,8 @@
       </div>
     </a>
 
-    <a class="game-button tombraider" href="tomb-raider-survivor-trilogy-exhibit.html">
-      <div class="banner-bg">
+    <a class="card tombraider" href="tomb-raider-survivor-trilogy-exhibit.html">
+      <div class="card-banner">
         <svg viewBox="0 0 400 110" preserveAspectRatio="xMidYMid slice">
           <defs>
             <linearGradient id="sky-tr" x1="0" y1="0" x2="1" y2="0">
@@ -430,9 +373,8 @@
           </g>
         </svg>
       </div>
-      <div class="banner-overlay"></div>
-      <div class="button-content">
-        <div class="button-info">
+      <div class="card-content">
+        <div>
           <span class="badge">Complete Set</span>
           <h2>Tomb Raider: The Survivor Trilogy</h2>
           <p>Reboot trilogy overview — 2013–2018</p>
@@ -441,8 +383,8 @@
       </div>
     </a>
 
-    <a class="game-button rdr2" href="red-dead-redemption-2-exhibit.html">
-      <div class="banner-bg">
+    <a class="card rdr2" href="red-dead-redemption-2-exhibit.html">
+      <div class="card-banner">
         <svg viewBox="0 0 400 110" preserveAspectRatio="xMidYMid slice">
           <defs>
             <linearGradient id="sky-rdr" x1="0" y1="0" x2="0" y2="1">
@@ -472,9 +414,8 @@
           </g>
         </svg>
       </div>
-      <div class="banner-overlay"></div>
-      <div class="button-content">
-        <div class="button-info">
+      <div class="card-content">
+        <div>
           <span class="badge">Vol. VI</span>
           <h2>Red Dead Redemption 2</h2>
           <p>Western outlaw epic — est. 2018</p>
@@ -486,8 +427,8 @@
 
   <div class="section-label">Anthologies</div>
   <div class="grid">
-    <a class="game-button xmen" href="xmen-anthology-exhibit.html">
-      <div class="banner-bg">
+    <a class="card xmen" href="xmen-anthology-exhibit.html">
+      <div class="card-banner">
         <svg viewBox="0 0 400 110" preserveAspectRatio="xMidYMid slice">
           <defs>
             <radialGradient id="core-xm" cx="50%" cy="50%" r="50%">
@@ -497,4 +438,32 @@
             <filter id="glow-xm"><feGaussianBlur stdDeviation="3"/></filter>
           </defs>
           <rect width="400" height="110" fill="url(#core-xm)"/>
-          <circle cx=
+          <circle cx="200" cy="54" r="50" fill="none" stroke="#E8B23A" stroke-width="1.3" opacity=".4"/>
+          <circle cx="200" cy="54" r="37" fill="none" stroke="#E8B23A" stroke-width="1.3" opacity=".32"/>
+          <circle cx="200" cy="54" r="24" fill="none" stroke="#E8B23A" stroke-width="1.3" opacity=".26"/>
+          <ellipse cx="200" cy="54" rx="120" ry="38" fill="#C4262E" opacity=".08" filter="url(#glow-xm)"/>
+          <g transform="translate(200,54)" opacity=".97">
+            <path d="M-17 46 L-15 8 Q-15 -4 0 -6 Q15 -4 15 8 L17 46 Z" fill="#080910"/>
+            <circle cx="0" cy="-16" r="9.5" fill="#080910"/>
+          </g>
+          <g fill="#EFE9DA" opacity=".7">
+            <circle cx="140" cy="28" r="2.2"/><circle cx="264" cy="26" r="2.2"/>
+            <circle cx="272" cy="82" r="2.2"/><circle cx="132" cy="84" r="2.2"/>
+          </g>
+        </svg>
+      </div>
+      <div class="card-content">
+        <div>
+          <span class="badge">One-Off</span>
+          <h2>Mutants on Steam</h2>
+          <p>X-Men &amp; X-Men-adjacent titles — 1992–2026</p>
+        </div>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+  </div>
+
+  <footer>Curated for a personal digital library · More exhibits added over time</footer>
+</div>
+</body>
+</html>
