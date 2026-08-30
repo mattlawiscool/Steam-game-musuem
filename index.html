@@ -7,34 +7,497 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,900;1,9..144,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --room:#171309;
-    --room-deep:#100D06;
-    --paper:#EFE3C8;
-    --ink:#2A2117;
-    --ink-soft:#5A4E3D;
-    --thread:#B7A67C;
+  :root {
+    --room: #171309;
+    --room-deep: #100D06;
+    --paper: #EFE3C8;
+    --ink: #2A2117;
+    --ink-soft: #5A4E3D;
+    --thread: #B7A67C;
   }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
     background:
       radial-gradient(ellipse at 20% -10%, #26301f 0%, transparent 55%),
       radial-gradient(ellipse at 90% 10%, #221a12 0%, transparent 50%),
       var(--room);
-    color:var(--paper);
-    font-family:'Space Mono', monospace;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
+    color: var(--paper);
+    font-family: 'Space Mono', monospace;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
   }
-  .wrap{max-width:760px; margin:0 auto; padding:40px 18px 90px;}
+  .wrap { max-width: 760px; margin: 0 auto; padding: 40px 18px 90px; }
 
-  .wallhead{
-    text-align:center;
-    color:var(--thread);
-    font-size:11px;
-    letter-spacing:.28em;
-    text-transform:uppercase;
+  .wallhead {
+    text-align: center;
+    color: var(--thread);
+    font-size: 11px;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    padding-bottom: 10px;
+    opacity: .75;
+  }
+  .wallhead .div { margin: 10px auto 0; width: 40px; height: 1px; background: var(--thread); opacity: .5; }
+
+  header.hero { text-align: center; margin: 24px 0 44px; }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(36px, 9vw, 56px);
+    line-height: 1;
+    color: var(--paper);
+    margin: 0 0 12px;
+  }
+  .lede {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--thread);
+    max-width: 44ch;
+    margin: 0 auto;
+  }
+
+  .grid { display: flex; flex-direction: column; gap: 14px; }
+
+  /* Mini Banner Button Styling */
+  .game-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 100px;
+    text-decoration: none;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 10px 24px -10px rgba(0,0,0,.7);
+    border: 1px solid rgba(239, 227, 200, 0.15);
+    border-left: 6px solid var(--accent, #4C6B3B);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+
+  .game-button:hover {
+    transform: translateY(-2px) scale(1.008);
+    box-shadow: 0 16px 32px -8px rgba(0,0,0,.85), 0 0 20px -6px var(--accent, #4C6B3B);
+    border-color: rgba(239, 227, 200, 0.4);
+  }
+
+  /* SVG Background Layer */
+  .banner-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    transition: transform .35s ease;
+  }
+  .banner-bg svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+  .game-button:hover .banner-bg {
+    transform: scale(1.03);
+  }
+
+  /* Dark Vignette Overlay for Text Readability */
+  .banner-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(90deg, 
+      rgba(10, 8, 5, 0.94) 0%, 
+      rgba(10, 8, 5, 0.82) 45%, 
+      rgba(10, 8, 5, 0.35) 80%,
+      rgba(10, 8, 5, 0.6) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Button Content */
+  .button-content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 18px 24px;
+    gap: 16px;
+  }
+
+  .button-info {
+    max-width: 82%;
+  }
+
+  .badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent, #A8C686);
+    display: inline-block;
+    margin-bottom: 2px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  }
+
+  .game-button h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.15;
+    margin: 0 0 3px;
+    color: #FFF;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+  }
+
+  .game-button p {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: #D6C9B0;
+    margin: 0;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+  }
+
+  .arrow {
+    font-size: 20px;
+    color: var(--accent, #EFE3C8);
+    flex-shrink: 0;
+    transition: transform .2s ease, color .2s ease;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+  }
+
+  .game-button:hover .arrow {
+    transform: translateX(4px);
+    color: #FFF;
+  }
+
+  /* Theme Accents */
+  .game-button.stardew { --accent: #76A34F; }
+  .game-button.cyberpunk { --accent: #FF2E7E; }
+  .game-button.witcher { --accent: #C43B3B; }
+  .game-button.persona { --accent: #FF3B4E; }
+  .game-button.tombraider { --accent: #E5BA35; }
+  .game-button.rdr2 { --accent: #C75B3E; }
+  .game-button.xmen { --accent: #E84D3D; }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--thread);
+    margin: 36px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(183,166,124,.3);
+  }
+
+  footer {
+    text-align: center;
+    color: var(--thread);
+    font-size: 10px;
+    letter-spacing: .1em;
+    opacity: .65;
+    margin-top: 56px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="wallhead">Digital Library Collection <span class="div"></span> Main Hall</div>
+
+  <header class="hero">
+    <h1>The Steam<br>Game Museum</h1>
+    <p class="lede">A growing collection of exhibits — one per game, each with its own history, media, and field notes.</p>
+  </header>
+
+  <div class="section-label">Exhibits</div>
+  <div class="grid">
+    <a class="game-button stardew" href="stardew-valley-exhibit.html">
+      <div class="banner-bg">
+        <svg viewBox="0 0 400 110" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="sky-sd" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#E8CE7A"/>
+              <stop offset="45%" stop-color="#B7C46A"/>
+              <stop offset="100%" stop-color="#5C7442"/>
+            </linearGradient>
+            <radialGradient id="sun-sd" cx="50%" cy="50%" r="50%">
+              <stop offset="0" stop-color="#FFF3C4" stop-opacity=".95"/>
+              <stop offset="100%" stop-color="#FFF3C4" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="field-sd" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#6E8F52"/>
+              <stop offset="100%" stop-color="#3E5A2E"/>
+            </linearGradient>
+            <filter id="soft-sd"><feGaussianBlur stdDeviation="3"/></filter>
+          </defs>
+          <rect width="400" height="110" fill="url(#sky-sd)"/>
+          <circle cx="335" cy="26" r="30" fill="url(#sun-sd)" filter="url(#soft-sd)"/>
+          <circle cx="335" cy="26" r="10" fill="#FFF9E0"/>
+          <path d="M0 70 C60 56 110 74 170 62 C240 50 290 68 400 54 V110 H0 Z" fill="url(#field-sd)" opacity=".9"/>
+          <path d="M0 88 C80 76 160 94 240 80 C300 70 350 86 400 76 V110 H0 Z" fill="#2E441F"/>
+          <g transform="translate(190,40)">
+            <polygon points="-6,32 30,-10 66,32" fill="#5A2E1C"/>
+            <rect x="2" y="32" width="52" height="30" fill="#7A4A30"/>
+            <rect x="14" y="46" width="9" height="16" fill="#241609"/>
+            <rect x="34" y="42" width="9" height="9" fill="#E8CE7A" opacity=".85"/>
+          </g>
+          <g transform="translate(280,72)" opacity=".92">
+            <ellipse cx="0" cy="30" rx="8" ry="2.6" fill="#1E2B12"/>
+            <rect x="-3" y="12" width="6" height="18" fill="#1E2B12"/>
+            <circle cx="0" cy="7" r="5.5" fill="#1E2B12"/>
+            <path d="M-3 14 L-10 22 M3 14 L10 20" stroke="#1E2B12" stroke-width="2.6" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+      <div class="banner-overlay"></div>
+      <div class="button-content">
+        <div class="button-info">
+          <span class="badge">Case 01</span>
+          <h2>Stardew Valley</h2>
+          <p>Farm life sim — solo-developed, est. 2016</p>
+        </div>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="game-button cyberpunk" href="cyberpunk-2077-exhibit.html">
+      <div class="banner-bg">
+        <svg viewBox="0 0 400 110" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="sky-cp" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#1a0f22"/>
+              <stop offset="100%" stop-color="#05050A"/>
+            </linearGradient>
+            <linearGradient id="tower-cp" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#232335"/>
+              <stop offset="100%" stop-color="#0C0C16"/>
+            </linearGradient>
+            <filter id="glow-cp"><feGaussianBlur stdDeviation="2.5"/></filter>
+            <filter id="haze-cp"><feGaussianBlur stdDeviation="9"/></filter>
+          </defs>
+          <rect width="400" height="110" fill="url(#sky-cp)"/>
+          <ellipse cx="200" cy="70" rx="150" ry="34" fill="#FF2E7E" opacity=".2" filter="url(#haze-cp)"/>
+          <ellipse cx="220" cy="80" rx="130" ry="26" fill="#28F2E5" opacity=".14" filter="url(#haze-cp)"/>
+          <g fill="url(#tower-cp)">
+            <rect x="10" y="42" width="22" height="68"/>
+            <rect x="36" y="18" width="16" height="92"/>
+            <rect x="340" y="30" width="20" height="80"/>
+            <rect x="366" y="54" width="22" height="56"/>
+          </g>
+          <g fill="#28F2E5" filter="url(#glow-cp)" opacity=".9">
+            <rect x="16" y="52" width="3" height="6"/><rect x="42" y="34" width="3" height="6"/>
+            <rect x="347" y="44" width="3" height="6"/>
+          </g>
+          <g fill="#FF2E7E" filter="url(#glow-cp)" opacity=".9">
+            <rect x="24" y="70" width="3" height="6"/><rect x="373" y="68" width="3" height="6"/>
+          </g>
+          <g transform="translate(200,26)" opacity=".96">
+            <path d="M-18 78 L-15 34 Q-15 22 0 20 Q15 22 15 34 L18 78 Z" fill="#08080D"/>
+            <circle cx="0" cy="9" r="10" fill="#08080D"/>
+            <path d="M-15 36 L-34 50 M15 36 L28 30 L38 14" stroke="#08080D" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+          </g>
+          <ellipse cx="205" cy="78" rx="100" ry="26" fill="#FF2E7E" opacity=".22" filter="url(#haze-cp)"/>
+        </svg>
+      </div>
+      <div class="banner-overlay"></div>
+      <div class="button-content">
+        <div class="button-info">
+          <span class="badge">Node 02</span>
+          <h2>Cyberpunk 2077</h2>
+          <p>Open-world action RPG — Night City, est. 2020</p>
+        </div>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="game-button witcher" href="witcher-3-exhibit.html">
+      <div class="banner-bg">
+        <svg viewBox="0 0 400 110" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="sky-wc" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#1b1712"/>
+              <stop offset="100%" stop-color="#0C0B0A"/>
+            </linearGradient>
+            <radialGradient id="moon-wc" cx="50%" cy="50%" r="50%">
+              <stop offset="0" stop-color="#EDE4CE" stop-opacity=".9"/>
+              <stop offset="100%" stop-color="#EDE4CE" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="tree-wc" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#241d16"/>
+              <stop offset="100%" stop-color="#0A0807"/>
+            </linearGradient>
+            <filter id="soft-wc"><feGaussianBlur stdDeviation="4"/></filter>
+          </defs>
+          <rect width="400" height="110" fill="url(#sky-wc)"/>
+          <circle cx="335" cy="26" r="36" fill="url(#moon-wc)" filter="url(#soft-wc)"/>
+          <circle cx="335" cy="26" r="12" fill="#EDE4CE" opacity=".85"/>
+          <path d="M0 70 L22 50 L38 68 L58 38 L78 66 L100 44 L126 70 L156 46 L186 68 L226 40 L266 70 L306 46 L346 68 L376 44 L400 64 V110 H0 Z" fill="url(#tree-wc)"/>
+          <path d="M0 92 L44 76 L88 96 L140 72 L192 94 L244 72 L296 96 L348 76 L400 92 V110 H0 Z" fill="#060504"/>
+          <g transform="translate(175,44)" opacity=".97">
+            <ellipse cx="0" cy="42" rx="28" ry="9" fill="#040302"/>
+            <path d="M-26 36 Q-28 14 -6 9 L20 9 Q30 12 30 28 L32 42" fill="#040302"/>
+            <path d="M16 11 L24 -8 M23 11 L33 -10" stroke="#040302" stroke-width="2.8" stroke-linecap="round"/>
+            <ellipse cx="5" cy="19" rx="10" ry="8" fill="#040302"/>
+            <path d="M-3 11 L-5 -3 M10 11 L13 -4" stroke="#040302" stroke-width="2.4" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+      <div class="banner-overlay"></div>
+      <div class="button-content">
+        <div class="button-info">
+          <span class="badge">Vol. III</span>
+          <h2>The Witcher 3: Wild Hunt</h2>
+          <p>Dark fantasy action RPG — est. 2015</p>
+        </div>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="game-button persona" href="persona-5-royal-exhibit.html">
+      <div class="banner-bg">
+        <svg viewBox="0 0 400 110" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="sky-p5" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#181818"/>
+              <stop offset="100%" stop-color="#050505"/>
+            </linearGradient>
+            <linearGradient id="slash-p5" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#FF4B5C"/>
+              <stop offset="100%" stop-color="#B3081A"/>
+            </linearGradient>
+            <filter id="glow-p5"><feGaussianBlur stdDeviation="3.5"/></filter>
+          </defs>
+          <rect width="400" height="110" fill="url(#sky-p5)"/>
+          <g fill="#E0142C" opacity=".4">
+            <circle cx="20" cy="18" r="1.8"/><circle cx="32" cy="18" r="1.8"/><circle cx="44" cy="18" r="1.8"/>
+            <circle cx="360" cy="92" r="1.8"/><circle cx="372" cy="92" r="1.8"/>
+          </g>
+          <polygon points="60,110 190,-14 232,-14 102,110" fill="url(#slash-p5)" opacity=".95"/>
+          <polygon points="60,110 190,-14 202,-14 72,110" fill="#FF8A9A" opacity=".5" filter="url(#glow-p5)"/>
+          <polygon points="240,110 280,36 304,36 264,110" fill="#F2C230" opacity=".88"/>
+          <g transform="translate(150,58)" opacity=".97">
+            <path d="M-18 52 L-15 14 Q-15 2 0 0 Q15 2 15 14 L18 52 Z" fill="#0A0A0A"/>
+            <path d="M-15 16 L-34 22 M15 16 L34 8" stroke="#0A0A0A" stroke-width="3.4" stroke-linecap="round"/>
+            <circle cx="0" cy="-9" r="10" fill="#0A0A0A"/>
+            <path d="M-9 -14 L-16 -22 M9 -14 L16 -22" stroke="#0A0A0A" stroke-width="2.6" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+      <div class="banner-overlay"></div>
+      <div class="button-content">
+        <div class="button-info">
+          <span class="badge">File 04</span>
+          <h2>Persona 5 Royal</h2>
+          <p>Turn-based JRPG / social sim — est. 2019</p>
+        </div>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="game-button tombraider" href="tomb-raider-survivor-trilogy-exhibit.html">
+      <div class="banner-bg">
+        <svg viewBox="0 0 400 110" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="sky-tr" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#3a2313"/>
+              <stop offset="50%" stop-color="#4a2f16"/>
+              <stop offset="100%" stop-color="#1c2c1a"/>
+            </linearGradient>
+            <radialGradient id="sun-tr" cx="50%" cy="50%" r="50%">
+              <stop offset="0" stop-color="#E4D3A7" stop-opacity=".85"/>
+              <stop offset="100%" stop-color="#E4D3A7" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="soft-tr"><feGaussianBlur stdDeviation="3.5"/></filter>
+          </defs>
+          <rect width="400" height="110" fill="url(#sky-tr)"/>
+          <circle cx="230" cy="32" r="28" fill="url(#sun-tr)" filter="url(#soft-tr)"/>
+          <circle cx="230" cy="32" r="13" fill="#F0E4C0"/>
+          <g transform="translate(150,-6)" fill="#0D1309">
+            <rect x="0" y="60" width="70" height="13"/>
+            <rect x="8" y="42" width="54" height="13"/>
+            <rect x="16" y="24" width="38" height="13"/>
+            <rect x="24" y="8" width="22" height="13"/>
+          </g>
+          <path d="M0 100 C100 88 260 106 400 94 V110 H0 Z" fill="#0A0906"/>
+          <g transform="translate(268,58)" opacity=".97">
+            <path d="M-15 46 L-13 14 Q-13 4 0 1 Q13 4 13 14 L15 46 Z" fill="#0A0906"/>
+            <path d="M-13 16 Q-28 7 -35 -11 M13 16 Q26 5 30 -13" stroke="#0A0906" stroke-width="3.4" stroke-linecap="round" fill="none"/>
+            <circle cx="0" cy="-8" r="8.5" fill="#0A0906"/>
+          </g>
+        </svg>
+      </div>
+      <div class="banner-overlay"></div>
+      <div class="button-content">
+        <div class="button-info">
+          <span class="badge">Complete Set</span>
+          <h2>Tomb Raider: The Survivor Trilogy</h2>
+          <p>Reboot trilogy overview — 2013–2018</p>
+        </div>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="game-button rdr2" href="red-dead-redemption-2-exhibit.html">
+      <div class="banner-bg">
+        <svg viewBox="0 0 400 110" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="sky-rdr" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#4a2c1a"/>
+              <stop offset="45%" stop-color="#7A4626"/>
+              <stop offset="100%" stop-color="#2b1a10"/>
+            </linearGradient>
+            <radialGradient id="sun-rdr" cx="50%" cy="50%" r="50%">
+              <stop offset="0" stop-color="#F7DFA8" stop-opacity=".95"/>
+              <stop offset="100%" stop-color="#F7DFA8" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="soft-rdr"><feGaussianBlur stdDeviation="4.5"/></filter>
+          </defs>
+          <rect width="400" height="110" fill="url(#sky-rdr)"/>
+          <circle cx="290" cy="38" r="40" fill="url(#sun-rdr)" filter="url(#soft-rdr)"/>
+          <circle cx="290" cy="38" r="16" fill="#FBEBC4"/>
+          <polygon points="0,92 30,52 60,92" fill="#241811" opacity=".85"/>
+          <polygon points="330,92 360,58 400,92" fill="#241811" opacity=".85"/>
+          <path d="M0 100 C120 88 280 104 400 96 V110 H0 Z" fill="#100A06"/>
+          <g transform="translate(170,30)" opacity=".97">
+            <ellipse cx="0" cy="70" rx="52" ry="9" fill="#0C0805"/>
+            <path d="M-34 70 Q-36 30 -9 22 L16 22 Q25 27 25 45 L34 70" fill="#0C0805"/>
+            <path d="M23 24 Q32 4 23 -12" stroke="#0C0805" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+            <ellipse cx="5" cy="34" rx="11" ry="9" fill="#0C0805"/>
+            <path d="M-5 22 L-7 4 M13 22 L18 2" stroke="#0C0805" stroke-width="3" stroke-linecap="round"/>
+            <rect x="-42" y="52" width="9" height="20" fill="#0C0805"/>
+          </g>
+        </svg>
+      </div>
+      <div class="banner-overlay"></div>
+      <div class="button-content">
+        <div class="button-info">
+          <span class="badge">Vol. VI</span>
+          <h2>Red Dead Redemption 2</h2>
+          <p>Western outlaw epic — est. 2018</p>
+        </div>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="section-label">Anthologies</div>
+  <div class="grid">
+    <a class="game-button xmen" href="xmen-anthology-exhibit.html">
+      <div class="banner-bg">
+        <svg viewBox="0 0 400 110" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="core-xm" cx="50%" cy="50%" r="50%">
+              <stop offset="0" stop-color="#2a1420"/>
+              <stop offset="100%" stop-color="#0A0C16"/>
+            </radialGradient>
+            <filter id="glow-xm"><feGaussianBlur stdDeviation="3"/></filter>
+          </defs>
+          <rect width="400" height="110" fill="url(#core-xm)"/>
+          <circle cx=    text-transform:uppercase;
     padding-bottom:10px;
     opacity:.75;
   }
