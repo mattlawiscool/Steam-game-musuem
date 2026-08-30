@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expedition Log — The Survivor Trilogy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#E7DCB8;
+    --paper-dark:#D6C89A;
+    --ink:#2B2417;
+    --ink-soft:#5C503A;
+    --brass:#A9832E;
+    --void:#171309;
+    --rust:#B5501C; --rust-deep:#8A3A12;
+    --ice:#3E7EA8; --ice-deep:#285C7D;
+    --jungle:#2F5C3A; --jungle-deep:#1E3E27;
+    --gold:#C9A227;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse at 15% 0%, #241d10 0%, transparent 55%),
+      radial-gradient(ellipse at 90% 90%, #1c160c 0%, transparent 55%),
+      var(--void);
+    color:var(--ink);
+    font-family:'Crimson Text', serif;
+    font-size:17px;
+    line-height:1.58;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:780px; margin:0 auto; padding:0 16px 90px;}
+
+  .topbar{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 4px 10px;
+    font-family:'Special Elite', cursive;
+    font-size:10.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--paper-dark);
+    border-bottom:2px solid var(--brass);
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    margin:24px 0 30px;
+    background:var(--paper);
+    padding:36px 24px 26px;
+    clip-path:polygon(0 2%, 3% 0, 97% 0, 100% 3%, 100% 98%, 97% 100%, 3% 100%, 0 97%);
+    box-shadow:0 20px 45px -18px rgba(0,0,0,.7);
+  }
+  .eyebrow{
+    font-family:'Special Elite', cursive;
+    font-size:12px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--rust-deep);
+    margin-bottom:10px;
+  }
+  h1.title{
+    font-family:'Oswald', sans-serif;
+    font-weight:700;
+    font-size:clamp(34px, 8.5vw, 54px);
+    line-height:.98;
+    margin:0 0 6px;
+    color:var(--ink);
+    text-transform:uppercase;
+  }
+  h2.subhead{
+    font-family:'Oswald', sans-serif;
+    font-weight:500;
+    font-size:16px;
+    letter-spacing:.08em;
+    color:var(--brass);
+    margin:0 0 16px;
+    text-transform:uppercase;
+  }
+  .subtitle{
+    font-style:italic;
+    font-size:18px;
+    color:var(--ink-soft);
+    max-width:52ch;
+    margin:0 0 20px;
+  }
+  .flag-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .flag{
+    font-family:'Special Elite', cursive;
+    font-size:10.5px;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    border:1px solid var(--ink-soft);
+    color:var(--ink-soft);
+    padding:5px 11px;
+  }
+  .flag.rust{border-color:var(--rust); color:var(--rust-deep);}
+  .flag.ice{border-color:var(--ice); color:var(--ice-deep);}
+  .flag.gold{border-color:var(--gold); color:var(--jungle-deep);}
+
+  .scene{margin-top:22px; border:2px solid var(--ink); overflow:hidden;}
+
+  /* ---------- generic entry ---------- */
+  .entry{margin:44px 0;}
+  .entry-head{
+    display:flex; align-items:baseline; gap:12px;
+    padding-bottom:9px; margin-bottom:16px;
+    border-bottom:2px solid var(--brass);
+  }
+  .entry-num{
+    font-family:'Special Elite', cursive;
+    font-size:11px;
+    color:var(--brass);
+    letter-spacing:.08em;
+  }
+  .entry-title{
+    font-family:'Oswald', sans-serif;
+    font-weight:700;
+    font-size:24px;
+    color:var(--paper);
+    text-transform:uppercase;
+  }
+  .entry-sub{
+    margin-left:auto;
+    font-family:'Special Elite', cursive;
+    font-size:9.5px;
+    color:var(--paper-dark);
+    letter-spacing:.06em;
+    text-align:right;
+  }
+
+  .card{
+    background:var(--paper);
+    padding:20px 22px 18px;
+    margin-bottom:12px;
+    box-shadow:0 12px 26px -14px rgba(0,0,0,.55);
+  }
+  .card p{margin:0 0 12px; color:var(--ink); font-size:17px;}
+  .card p:last-child{margin-bottom:0;}
+  .card h3{
+    font-family:'Oswald', sans-serif;
+    font-size:14.5px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--rust-deep);
+    margin:0 0 12px;
+  }
+
+  .tl{list-style:none; margin:0; padding:0;}
+  .tl li{
+    display:grid; grid-template-columns:64px 1fr; gap:14px;
+    padding:11px 0;
+    border-top:1px dashed rgba(43,36,23,.25);
+  }
+  .tl li:first-child{border-top:none; padding-top:0;}
+  .tl .yr{font-family:'Oswald', sans-serif; font-weight:600; font-size:13px; color:var(--rust-deep);}
+  .tl .ev{font-size:16px; color:var(--ink);}
+
+  /* ---------- chapter blocks (per game) ---------- */
+  .chapter{
+    margin-bottom:26px;
+    border-left:6px solid var(--rust);
+    background:var(--paper);
+    box-shadow:0 14px 30px -16px rgba(0,0,0,.6);
+  }
+  .chapter.ice-chap{border-left-color:var(--ice);}
+  .chapter.gold-chap{border-left-color:var(--gold);}
+
+  .chapter-head{
+    padding:20px 22px 14px;
+    display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap;
+  }
+  .chapter-tag{
+    font-family:'Special Elite', cursive;
+    font-size:10px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--rust-deep);
+    display:block;
+    margin-bottom:4px;
+  }
+  .ice-chap .chapter-tag{color:var(--ice-deep);}
+  .gold-chap .chapter-tag{color:var(--jungle-deep);}
+  .chapter-title{
+    font-family:'Oswald', sans-serif;
+    font-weight:700;
+    font-size:24px;
+    text-transform:uppercase;
+    color:var(--ink);
+    margin:0;
+  }
+  .chapter-year{
+    font-family:'Oswald', sans-serif;
+    font-weight:600;
+    font-size:13px;
+    color:var(--ink-soft);
+    border:1px solid var(--ink-soft);
+    padding:4px 10px;
+    white-space:nowrap;
+  }
+  .chapter-body{padding:0 22px 22px;}
+  .chapter-body p{margin:0 0 12px; font-size:16.5px; color:var(--ink);}
+  .chapter-body p:last-child{margin-bottom:0;}
+
+  .mini-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:14px 0;}
+  .mini-spec{background:var(--paper-dark); padding:11px 13px;}
+  .mini-spec .k{
+    font-family:'Oswald', sans-serif; font-size:9px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--rust-deep); display:block; margin-bottom:4px;
+  }
+  .ice-chap .mini-spec .k{color:var(--ice-deep);}
+  .gold-chap .mini-spec .k{color:var(--jungle-deep);}
+  .mini-spec .v{font-size:14px; color:var(--ink);}
+
+  .video-frame{background:var(--paper-dark); padding:10px 10px 8px; margin:14px 0;}
+  .vlabel{font-family:'Oswald', sans-serif; font-size:10.5px; letter-spacing:.03em; color:var(--ink-soft); margin-bottom:8px; text-transform:uppercase;}
+  .vlabel strong{color:var(--ink);}
+  .video-embed{position:relative; width:100%; padding-top:56.25%; background:#000;}
+  .video-embed iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+
+  .mini-scores{display:flex; gap:8px; flex-wrap:wrap; margin:14px 0;}
+  .mini-chip{background:var(--paper-dark); padding:7px 11px; text-align:center; min-width:56px;}
+  .mini-chip .num{font-family:'Oswald', sans-serif; font-weight:700; font-size:16px; color:var(--rust-deep); display:block; line-height:1;}
+  .ice-chap .mini-chip .num{color:var(--ice-deep);}
+  .gold-chap .mini-chip .num{color:var(--jungle-deep);}
+  .mini-chip .src{font-family:'Special Elite', cursive; font-size:7.5px; letter-spacing:.03em; text-transform:uppercase; color:var(--ink-soft); display:block; margin-top:3px;}
+
+  .mini-notes{display:flex; flex-direction:column; gap:6px; margin:14px 0;}
+  .mini-note{
+    background:var(--paper-dark); border-left:3px solid var(--rust); padding:9px 12px; font-size:14.5px; display:flex; gap:8px;
+  }
+  .ice-chap .mini-note{border-left-color:var(--ice);}
+  .gold-chap .mini-note{border-left-color:var(--gold);}
+  .mini-note .mark{font-family:'Oswald', sans-serif; font-weight:700; color:var(--rust-deep); flex-shrink:0; font-size:11px;}
+  .ice-chap .mini-note .mark{color:var(--ice-deep);}
+  .gold-chap .mini-note .mark{color:var(--jungle-deep);}
+
+  .mini-links{display:flex; flex-direction:column; gap:6px; margin-top:12px;}
+  .mini-link{
+    display:flex; align-items:center; gap:10px;
+    background:#fff2;
+    padding:9px 12px;
+    text-decoration:none;
+    color:var(--ink);
+    font-size:13.5px;
+    border:1px solid rgba(43,36,23,.15);
+  }
+  .mini-link .ico{
+    font-family:'Oswald', sans-serif; font-size:10px; color:var(--paper);
+    background:var(--rust-deep); width:18px; height:18px; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .ice-chap .mini-link .ico{background:var(--ice-deep);}
+  .gold-chap .mini-link .ico{background:var(--jungle-deep);}
+  .mini-link strong{font-weight:600;}
+  .mini-link.placeholder{border-style:dashed;}
+  .mini-link.placeholder .ico{background:transparent; border:1px dashed var(--ink-soft); color:var(--ink-soft);}
+
+  .chapter-qr-btn{
+    margin-top:14px;
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:11px; letter-spacing:.04em; text-transform:uppercase;
+    background:var(--rust-deep); color:var(--paper); border:none; padding:8px 14px; cursor:pointer;
+  }
+  .ice-chap .chapter-qr-btn{background:var(--ice-deep);}
+  .gold-chap .chapter-qr-btn{background:var(--jungle-deep);}
+
+  /* ---------- links & QR ---------- */
+  .linklist{display:flex; flex-direction:column; gap:8px;}
+  .linkrow{
+    display:flex; align-items:center; gap:12px;
+    background:var(--paper);
+    padding:13px 16px;
+    text-decoration:none;
+    color:var(--ink);
+    box-shadow:0 10px 22px -14px rgba(0,0,0,.5);
+    transition:transform .15s ease;
+  }
+  .linkrow:hover{transform:translateX(3px);}
+  .linkrow .ico{
+    font-family:'Oswald', sans-serif; font-size:12px; color:var(--paper); background:var(--rust-deep);
+    width:24px; height:24px; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .linkrow .txt strong{display:block; font-size:15.5px; font-weight:600;}
+  .linkrow .txt span{display:block; font-size:12.5px; color:var(--ink-soft);}
+
+  .qrbox{background:var(--paper); padding:26px; text-align:center;}
+  .qrbox input{
+    width:100%; font-family:'Special Elite', cursive; font-size:12.5px;
+    padding:10px 12px; border:2px solid var(--ink); background:#fff; color:var(--ink); margin-bottom:14px;
+  }
+  #qrcode{display:inline-flex; align-items:center; justify-content:center; background:#fff; padding:14px; min-height:172px; min-width:172px;}
+  .qrhint{font-family:'Special Elite', cursive; font-size:10px; color:var(--ink-soft); margin-top:12px;}
+  .btn-row{display:flex; gap:8px; justify-content:center; flex-wrap:wrap;}
+  .btn{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:11px; letter-spacing:.04em; text-transform:uppercase;
+    background:var(--rust-deep); color:var(--paper); border:none; padding:8px 14px; cursor:pointer;
+  }
+  .btn.ice{background:var(--ice-deep);}
+  .btn.gold{background:var(--jungle-deep);}
+  .btn.alt{background:var(--ink);}
+  .btn:hover{filter:brightness(1.15);}
+
+  footer{text-align:center; color:var(--paper-dark); font-family:'Special Elite', cursive; font-size:10px; letter-spacing:.1em; margin-top:50px; opacity:.7;}
+
+  @media (max-width:520px){
+    .mini-grid{grid-template-columns:1fr;}
+    .entry-sub{display:none;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <span>Croft Expedition Archive</span>
+    <span>Digital Library · Complete Set</span>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="eyebrow">Survival Action-Adventure Trilogy — 2013–2018</div>
+    <h1 class="title">Tomb Raider</h1>
+    <h2 class="subhead">The Survivor Trilogy</h2>
+    <p class="subtitle">One reboot, three studios, and a single continuous story: a shipwrecked graduate becoming the Tomb Raider — from a cursed island, through Siberian tundra, to a hidden city in the jungle.</p>
+    <div class="flag-row">
+      <span class="flag rust">Book I · 2013</span>
+      <span class="flag ice">Book II · 2015</span>
+      <span class="flag gold">Book III · 2018</span>
+    </div>
+
+    <div class="scene">
+      <svg viewBox="0 0 720 200" width="100%" style="display:block;">
+        <rect width="720" height="200" fill="#171309"/>
+        <defs>
+          <linearGradient id="triofade" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#8A3A12" stop-opacity=".35"/>
+            <stop offset="0.5" stop-color="#285C7D" stop-opacity=".3"/>
+            <stop offset="1" stop-color="#1E3E27" stop-opacity=".35"/>
+          </linearGradient>
+        </defs>
+        <rect width="720" height="200" fill="url(#triofade)"/>
+        <!-- three terrain silhouettes side by side -->
+        <path d="M0 150 C50 120 90 150 140 130 V200 H0 Z" fill="#241d10"/>
+        <g transform="translate(180,0)">
+          <polygon points="0,150 40,80 70,140 110,60 160,150 240,150" fill="#16232a"/>
+        </g>
+        <g transform="translate(440,0)">
+          <rect x="0" y="90" width="100" height="14" fill="#0D1309"/>
+          <rect x="10" y="76" width="80" height="14" fill="#0D1309"/>
+          <rect x="20" y="62" width="60" height="14" fill="#0D1309"/>
+          <rect x="30" y="48" width="40" height="14" fill="#0D1309"/>
+        </g>
+        <path d="M0 175 C160 155 300 185 440 165 C560 148 640 175 720 160 V200 H0 Z" fill="#12190F"/>
+        <!-- three small figure marks -->
+        <circle cx="120" cy="145" r="3" fill="#E7DCB8" opacity=".7"/>
+        <circle cx="380" cy="145" r="3" fill="#E7DCB8" opacity=".7"/>
+        <circle cx="600" cy="150" r="3" fill="#E7DCB8" opacity=".7"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ENTRY I — THE REBOOT -->
+  <div class="entry">
+    <div class="entry-head">
+      <span class="entry-num">LOG 01</span>
+      <span class="entry-title">The Reboot</span>
+      <span class="entry-sub">Origins &amp;<br>Trilogy Arc</span>
+    </div>
+    <div class="card">
+      <p>After the Legend–Anniversary–Underworld era wound down, Crystal Dynamics didn't build a sequel — they rebuilt Lara Croft from the ground up. Rather than the acrobatic icon of the '90s, the reboot's Lara is a 21-year-old archaeology graduate, shipwrecked and utterly unprepared, who has to become a survivor before she can become a legend. That single decision — origin story over continuation — shaped everything that followed across all three games.</p>
+      <p>The trilogy was told across three chapters and, unusually, two different studios: Crystal Dynamics led the first two entries, while Eidos-Montréal took over for the finale, leaning the series further into exploration and puzzle-heavy tombs as Lara's arc reached its end.</p>
+    </div>
+    <div class="card">
+      <h3>Trilogy Timeline</h3>
+      <ul class="tl">
+        <li><span class="yr">2013</span><span class="ev">Tomb Raider reboots the series on Yamatai — Lara's first, brutal survival.</span></li>
+        <li><span class="yr">2015</span><span class="ev">Rise of the Tomb Raider sends her into Siberia, chasing her father's research.</span></li>
+        <li><span class="yr">2018</span><span class="ev">Shadow of the Tomb Raider closes the arc in Peru and Mexico, as she becomes the Tomb Raider.</span></li>
+        <li><span class="yr">2021</span><span class="ev">All three are bundled together as the Definitive Survivor Trilogy.</span></li>
+        <li><span class="yr">2024</span><span class="ev">An animated Netflix series, The Legend of Lara Croft, continues the character's story.</span></li>
+        <li><span class="yr">2026</span><span class="ev">New mainline Tomb Raider entries are in development, continuing beyond the reboot era.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ENTRY II — THE CHAPTERS -->
+  <div class="entry">
+    <div class="entry-head">
+      <span class="entry-num">LOG 02</span>
+      <span class="entry-title">The Chapters</span>
+      <span class="entry-sub">Game by<br>Game</span>
+    </div>
+
+    <!-- CHAPTER 1 -->
+    <div class="chapter">
+      <div class="chapter-head">
+        <div>
+          <span class="chapter-tag">Book I</span>
+          <h3 class="chapter-title">Tomb Raider</h3>
+        </div>
+        <span class="chapter-year">2013 · Crystal Dynamics</span>
+      </div>
+      <div class="chapter-body">
+        <p>Shipwrecked in the Dragon's Triangle, Lara fights the island of Yamatai and the Solarii cult that rules it — the game that made her a survivor, and the best-selling Tomb Raider ever made.</p>
+        <div class="mini-grid">
+          <div class="mini-spec"><span class="k">Setting</span><span class="v">Yamatai island</span></div>
+          <div class="mini-spec"><span class="k">Sales</span><span class="v">8.5M+ copies</span></div>
+        </div>
+        <div class="video-frame">
+          <div class="vlabel"><strong>Definitive Edition Launch Trailer</strong></div>
+          <div class="video-embed">
+            <iframe src="https://www.youtube.com/embed/3VmFhs26U2E" title="Tomb Raider Definitive Edition Launch Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+        </div>
+        <div class="mini-scores">
+          <div class="mini-chip"><span class="num">86</span><span class="src">Metacritic</span></div>
+          <div class="mini-chip"><span class="num">86</span><span class="src">OpenCritic</span></div>
+          <div class="mini-chip"><span class="num">8.5M+</span><span class="src">Sold</span></div>
+        </div>
+        <div class="mini-notes">
+          <div class="mini-note"><span class="mark">01</span>Prioritize the Salvage skill early — extra scrap speeds up every weapon upgrade that follows.</div>
+          <div class="mini-note"><span class="mark">02</span>Fully upgrade the bow before the shotgun; it's silent, recoverable, and carries most stealth encounters.</div>
+        </div>
+        <div class="mini-links">
+          <a class="mini-link" href="https://www.digitaltrends.com/gaming/tomb-raider-getting-started-guide/" target="_blank" rel="noopener"><span class="ico">✎</span><strong>Written Guide — Digital Trends</strong></a>
+          <a class="mini-link" href="https://tombraiders.net/stella/tombraider2013.html" target="_blank" rel="noopener"><span class="ico">✎</span><strong>Full Walkthrough — Stella's Site</strong></a>
+          <a class="mini-link placeholder"><span class="ico">＋</span><strong>Add a video guide</strong></a>
+        </div>
+        <button class="chapter-qr-btn" onclick="setQR('https://store.steampowered.com/app/203160/Tomb_Raider/')">Use This Game's Steam Page ↓</button>
+      </div>
+    </div>
+
+    <!-- CHAPTER 2 -->
+    <div class="chapter ice-chap">
+      <div class="chapter-head">
+        <div>
+          <span class="chapter-tag">Book II</span>
+          <h3 class="chapter-title">Rise of the Tomb Raider</h3>
+        </div>
+        <span class="chapter-year">2015 · Crystal Dynamics</span>
+      </div>
+      <div class="chapter-body">
+        <p>A year on, Lara chases her late father's research into the Siberian wilderness, searching for a lost city that promises immortality — and runs headlong into Trinity, the organization hunting it too.</p>
+        <div class="mini-grid">
+          <div class="mini-spec"><span class="k">Setting</span><span class="v">Siberian wilderness</span></div>
+          <div class="mini-spec"><span class="k">Antagonist</span><span class="v">Trinity</span></div>
+        </div>
+        <div class="video-frame">
+          <div class="vlabel"><strong>Official Launch Trailer</strong></div>
+          <div class="video-embed">
+            <iframe src="https://www.youtube.com/embed/qiYiddjc6cU" title="Rise of the Tomb Raider Official Launch Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+        </div>
+        <div class="mini-scores">
+          <div class="mini-chip"><span class="num">88</span><span class="src">Metacritic</span></div>
+          <div class="mini-chip"><span class="num">86</span><span class="src">OpenCritic</span></div>
+          <div class="mini-chip"><span class="num">94%</span><span class="src">Steam Pos.</span></div>
+        </div>
+        <div class="mini-notes">
+          <div class="mini-note"><span class="mark">01</span>Grab the lockpick early via "Cut Short" — it unlocks chests you'd otherwise skip for hours.</div>
+          <div class="mini-note"><span class="mark">02</span>Craft poison arrows for wildlife like bears without burning rifle ammo.</div>
+        </div>
+        <div class="mini-links">
+          <a class="mini-link" href="https://www.gamepressure.com/riseofthetombraider/" target="_blank" rel="noopener"><span class="ico">✎</span><strong>Written Guide — Gamepressure</strong></a>
+          <a class="mini-link" href="https://tombraiders.net/stella/rise.html" target="_blank" rel="noopener"><span class="ico">✎</span><strong>Full Walkthrough — Stella's Site</strong></a>
+          <a class="mini-link placeholder"><span class="ico">＋</span><strong>Add a video guide</strong></a>
+        </div>
+        <button class="chapter-qr-btn" onclick="setQR('https://store.steampowered.com/app/391220/Rise_of_the_Tomb_Raider/')">Use This Game's Steam Page ↓</button>
+      </div>
+    </div>
+
+    <!-- CHAPTER 3 -->
+    <div class="chapter gold-chap">
+      <div class="chapter-head">
+        <div>
+          <span class="chapter-tag">Book III</span>
+          <h3 class="chapter-title">Shadow of the Tomb Raider</h3>
+        </div>
+        <span class="chapter-year">2018 · Eidos-Montréal</span>
+      </div>
+      <div class="chapter-body">
+        <p>The finale sends Lara into Peru and Mexico, racing to undo a Maya apocalypse she triggered herself — the most exploration- and puzzle-focused entry, and the completion of her transformation into the Tomb Raider.</p>
+        <div class="mini-grid">
+          <div class="mini-spec"><span class="k">Setting</span><span class="v">Peru, Mexico &amp; Paititi</span></div>
+          <div class="mini-spec"><span class="k">New Feature</span><span class="v">Full underwater swimming</span></div>
+        </div>
+        <div class="video-frame">
+          <div class="vlabel"><strong>Launch Trailer</strong></div>
+          <div class="video-embed">
+            <iframe src="https://www.youtube.com/embed/r_WbvIDAcA4" title="Shadow of the Tomb Raider Launch Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+        </div>
+        <div class="mini-scores">
+          <div class="mini-chip"><span class="num">78</span><span class="src">Metacritic</span></div>
+          <div class="mini-chip"><span class="num">82</span><span class="src">OpenCritic</span></div>
+          <div class="mini-chip"><span class="num">III</span><span class="src">Of III</span></div>
+        </div>
+        <div class="mini-notes">
+          <div class="mini-note"><span class="mark">01</span>Craft mud camouflage early — it makes most combat sections optional stealth runs.</div>
+          <div class="mini-note"><span class="mark">02</span>Check submerged tunnels — full underwater exploration hides several relics below the surface.</div>
+        </div>
+        <div class="mini-links">
+          <a class="mini-link" href="https://gamewith.net/shadow-of-the-tomb-raider/" target="_blank" rel="noopener"><span class="ico">✎</span><strong>Written Guide — GameWith</strong></a>
+          <a class="mini-link" href="https://tombraider.fandom.com/wiki/Shadow_of_the_Tomb_Raider/Walkthrough" target="_blank" rel="noopener"><span class="ico">✎</span><strong>Full Walkthrough — Lara Croft Wiki</strong></a>
+          <a class="mini-link placeholder"><span class="ico">＋</span><strong>Add a video guide</strong></a>
+        </div>
+        <button class="chapter-qr-btn" onclick="setQR('https://store.steampowered.com/app/750920/Shadow_of_the_Tomb_Raider_Definitive_Edition/')">Use This Game's Steam Page ↓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENTRY III — ARCHIVE -->
+  <div class="entry">
+    <div class="entry-head">
+      <span class="entry-num">LOG 03</span>
+      <span class="entry-title">Archive</span>
+      <span class="entry-sub">General<br>Reference</span>
+    </div>
+    <div class="linklist">
+      <a class="linkrow" href="https://tombraider.square-enix-games.com/" target="_blank" rel="noopener">
+        <span class="ico">↗</span>
+        <span class="txt"><strong>Official Site</strong><span>tombraider.square-enix-games.com</span></span>
+      </a>
+      <a class="linkrow" href="https://tombraider.fandom.com/" target="_blank" rel="noopener">
+        <span class="ico">↗</span>
+        <span class="txt"><strong>Lara Croft Wiki</strong><span>Full lore reference across all three games</span></span>
+      </a>
+    </div>
+  </div>
+
+  <!-- QR TOOL -->
+  <div class="entry">
+    <div class="entry-head">
+      <span class="entry-num">LOG 04</span>
+      <span class="entry-title">Print &amp; Display</span>
+    </div>
+    <div class="qrbox">
+      <input id="qrurl" type="text" value="https://store.steampowered.com/bundle/34203/Tomb_Raider_Definitive_Survivor_Trilogy/">
+      <div class="btn-row">
+        <button class="btn" onclick="makeQR()">Generate QR Code</button>
+        <button class="btn alt" onclick="useTrilogy()">Use Trilogy Bundle</button>
+      </div>
+      <div id="qrcode"></div>
+      <div class="qrhint">Defaults to the trilogy bundle. Use a chapter's "Use This Game's Steam Page" button above to point it at one title instead, or swap in this exhibit's own hosted URL once it's live.</div>
+    </div>
+  </div>
+
+  <footer>Curated for a personal digital library · The Complete Survivor Trilogy</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  let qr = null;
+  function makeQR(){
+    const url = document.getElementById('qrurl').value.trim();
+    const box = document.getElementById('qrcode');
+    box.innerHTML = '';
+    if(!url){ box.innerHTML = '<span style="font-family:\'Special Elite\',cursive;font-size:11px;color:#333;">Enter a URL first</span>'; return; }
+    qr = new QRCode(box, { text:url, width:160, height:160, colorDark:'#2B2417', colorLight:'#ffffff' });
+  }
+  function useTrilogy(){
+    document.getElementById('qrurl').value = 'https://store.steampowered.com/bundle/34203/Tomb_Raider_Definitive_Survivor_Trilogy/';
+    makeQR();
+  }
+  function setQR(url){
+    document.getElementById('qrurl').value = url;
+    makeQR();
+    document.getElementById('qrcode').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  window.addEventListener('DOMContentLoaded', makeQR);
+</script>
+</body>
+</html>
