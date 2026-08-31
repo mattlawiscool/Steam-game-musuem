@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manuscript Pages — Alan Wake</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0A0A0C;
+    --void-deep:#050506;
+    --page:#EDE6D3;
+    --page-dark:#DDD3B8;
+    --ink:#211C14;
+    --ink-soft:#544E3E;
+    --amber:#E8A23D;
+    --amber-deep:#B87418;
+    --red:#A81E1E;
+    --red-deep:#7A1414;
+    --edge:#2A2A28;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse at 50% 0%, #241d12 0%, transparent 45%),
+      radial-gradient(ellipse at 80% 90%, #1a1008 0%, transparent 50%),
+      var(--void);
+    color:var(--page);
+    font-family:'EB Garamond', serif;
+    font-size:18px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:0 16px 90px;}
+
+  .topbar{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 4px 10px;
+    font-family:'Courier Prime', monospace;
+    font-weight:700;
+    font-size:10.5px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--amber);
+    border-bottom:2px solid var(--red);
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    margin:24px 0 30px;
+    background:var(--page);
+    color:var(--ink);
+    padding:36px 24px 26px;
+    box-shadow:0 20px 45px -18px rgba(0,0,0,.8);
+  }
+  .eyebrow{
+    font-family:'Courier Prime', monospace;
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--red-deep);
+    margin-bottom:10px;
+  }
+  h1.title{
+    font-family:'Special Elite', cursive;
+    font-size:clamp(34px, 8.5vw, 52px);
+    line-height:1.05;
+    margin:0 0 6px;
+    color:var(--ink);
+  }
+  h2.subhead{
+    font-family:'Courier Prime', monospace;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:.04em;
+    color:var(--amber-deep);
+    margin:0 0 18px;
+    text-transform:uppercase;
+  }
+  .subtitle{
+    font-style:italic;
+    font-size:18px;
+    color:var(--ink-soft);
+    max-width:48ch;
+    margin:0 0 20px;
+  }
+  .flag-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .flag{
+    font-family:'Courier Prime', monospace;
+    font-weight:700;
+    font-size:10.5px;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    border:1px solid var(--ink-soft);
+    color:var(--ink-soft);
+    padding:5px 11px;
+  }
+  .flag.red{border-color:var(--red-deep); color:var(--red-deep);}
+
+  .scene{margin-top:22px; border:2px solid var(--ink); overflow:hidden;}
+
+  /* ---------- pages (entries) ---------- */
+  .entry{margin:46px 0;}
+  .entry-head{
+    display:flex; align-items:baseline; gap:12px;
+    padding-bottom:9px; margin-bottom:18px;
+    border-bottom:2px solid var(--red);
+  }
+  .entry-num{
+    font-family:'Courier Prime', monospace;
+    font-weight:700;
+    font-size:11px;
+    color:var(--amber);
+    letter-spacing:.08em;
+  }
+  .entry-title{
+    font-family:'Special Elite', cursive;
+    font-size:24px;
+    color:var(--page);
+  }
+  .entry-sub{
+    margin-left:auto;
+    font-family:'Courier Prime', monospace;
+    font-size:9.5px;
+    color:var(--ink-soft);
+    letter-spacing:.06em;
+    text-align:right;
+    color:#8A8272;
+  }
+
+  .page{
+    background:var(--page);
+    padding:22px 24px 20px;
+    margin-bottom:12px;
+    box-shadow:0 12px 26px -14px rgba(0,0,0,.6);
+    position:relative;
+  }
+  .page p{margin:0 0 12px; color:var(--ink); font-size:17.5px;}
+  .page p:last-child{margin-bottom:0;}
+  .page h3{
+    font-family:'Courier Prime', monospace;
+    font-weight:700;
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--red-deep);
+    margin:0 0 12px;
+  }
+
+  .tl{list-style:none; margin:0; padding:0;}
+  .tl li{
+    display:grid; grid-template-columns:64px 1fr; gap:14px;
+    padding:11px 0;
+    border-top:1px dashed rgba(33,28,20,.22);
+  }
+  .tl li:first-child{border-top:none; padding-top:0;}
+  .tl .yr{font-family:'Courier Prime', monospace; font-weight:700; font-size:13px; color:var(--red-deep);}
+  .tl .ev{font-size:16.5px; color:var(--ink);}
+
+  /* ---------- book chapters (one per game) ---------- */
+  .book{
+    margin-bottom:22px;
+    border-left:6px solid var(--amber-deep);
+    background:var(--page);
+    color:var(--ink);
+    box-shadow:0 14px 30px -16px rgba(0,0,0,.65);
+  }
+  .book.two{border-left-color:var(--red-deep);}
+  .book-head{
+    padding:18px 20px 12px;
+    display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap;
+  }
+  .book-tag{
+    font-family:'Courier Prime', monospace;
+    font-weight:700;
+    font-size:10px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--amber-deep);
+    display:block;
+    margin-bottom:4px;
+  }
+  .book.two .book-tag{color:var(--red-deep);}
+  .book-title{
+    font-family:'Special Elite', cursive;
+    font-size:22px;
+    color:var(--ink);
+    margin:0;
+  }
+  .book-year{
+    font-family:'Courier Prime', monospace;
+    font-weight:700;
+    font-size:12px;
+    color:#555;
+    border:1px solid #999;
+    padding:4px 10px;
+    white-space:nowrap;
+  }
+  .book-body{padding:0 20px 20px;}
+  .book-body p{margin:0 0 12px; font-size:16.5px; color:var(--ink);}
+  .book-body p:last-child{margin-bottom:0;}
+
+  .mini-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0;}
+  .mini-spec{background:var(--page-dark); padding:10px 12px;}
+  .mini-spec .k{
+    font-family:'Courier Prime', monospace; font-weight:700; font-size:9px; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--red-deep); display:block; margin-bottom:4px;
+  }
+  .book.two .mini-spec .k{color:var(--red-deep);}
+  .mini-spec .v{font-size:14px; color:var(--ink);}
+
+  .video-frame{background:var(--page-dark); padding:10px 10px 8px; margin:12px 0;}
+  .vlabel{font-family:'Courier Prime', monospace; font-weight:700; font-size:10.5px; letter-spacing:.03em; color:#555; margin-bottom:8px; text-transform:uppercase;}
+  .vlabel strong{color:var(--ink); text-transform:none;}
+  .video-embed{position:relative; width:100%; padding-top:56.25%; background:#000;}
+  .video-embed iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+
+  .mini-scores{display:flex; gap:8px; flex-wrap:wrap; margin:12px 0;}
+  .mini-chip{background:var(--page-dark); padding:7px 11px; text-align:center; min-width:56px;}
+  .mini-chip .num{font-family:'Courier Prime', monospace; font-weight:700; font-size:16px; color:var(--amber-deep); display:block; line-height:1;}
+  .book.two .mini-chip .num{color:var(--red-deep);}
+  .mini-chip .src{font-family:'Courier Prime', monospace; font-size:7.5px; letter-spacing:.03em; text-transform:uppercase; color:#555; display:block; margin-top:3px;}
+
+  .mini-notes{display:flex; flex-direction:column; gap:6px; margin:12px 0;}
+  .mini-note{
+    background:var(--page-dark); border-left:3px solid var(--amber-deep); padding:9px 12px; font-size:14.5px; display:flex; gap:8px;
+  }
+  .book.two .mini-note{border-left-color:var(--red-deep);}
+  .mini-note .mark{font-family:'Courier Prime', monospace; font-weight:700; color:var(--amber-deep); flex-shrink:0; font-size:11px;}
+  .book.two .mini-note .mark{color:var(--red-deep);}
+
+  .mini-links{display:flex; flex-direction:column; gap:6px; margin-top:12px;}
+  .mini-link{
+    display:flex; align-items:center; gap:10px;
+    background:#0001;
+    padding:9px 12px;
+    text-decoration:none;
+    color:var(--ink);
+    font-size:13.5px;
+    border:1px solid rgba(33,28,20,.15);
+  }
+  .mini-link .ico{
+    font-family:'Courier Prime', monospace; font-weight:700; font-size:10px; color:var(--page);
+    background:var(--amber-deep); width:18px; height:18px; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .book.two .mini-link .ico{background:var(--red-deep);}
+  .mini-link strong{font-weight:700;}
+  .mini-link.placeholder{border-style:dashed;}
+  .mini-link.placeholder .ico{background:transparent; border:1px dashed var(--ink-soft); color:var(--ink-soft);}
+
+  .book-qr-btn{
+    margin-top:14px;
+    font-family:'Courier Prime', monospace; font-weight:700; font-size:11px; letter-spacing:.04em; text-transform:uppercase;
+    background:var(--amber-deep); color:var(--page); border:none; padding:8px 14px; cursor:pointer;
+  }
+  .book.two .book-qr-btn{background:var(--red-deep);}
+
+  .platform-note{
+    font-family:'Courier Prime', monospace;
+    font-size:11px;
+    color:var(--red-deep);
+    background:rgba(168,30,30,.08);
+    border:1px dashed var(--red-deep);
+    padding:8px 12px;
+    margin:12px 0;
+  }
+
+  /* ---------- links & qr ---------- */
+  .linklist{display:flex; flex-direction:column; gap:8px;}
+  .linkrow{
+    display:flex; align-items:center; gap:12px;
+    background:var(--page);
+    padding:13px 16px;
+    text-decoration:none;
+    color:var(--ink);
+    box-shadow:0 10px 22px -14px rgba(0,0,0,.5);
+    transition:transform .15s ease;
+  }
+  .linkrow:hover{transform:translateX(3px);}
+  .linkrow .ico{
+    font-family:'Courier Prime', monospace; font-weight:700; font-size:12px; color:var(--page); background:var(--red-deep);
+    width:24px; height:24px; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .linkrow .txt strong{display:block; font-size:15.5px; font-weight:700;}
+  .linkrow .txt span{display:block; font-size:12.5px; color:var(--ink-soft);}
+
+  .qrbox{background:var(--page); padding:26px; text-align:center;}
+  .qrbox input{
+    width:100%; font-family:'Courier Prime', monospace; font-size:12.5px;
+    padding:10px 12px; border:2px solid var(--ink); background:#fff; color:var(--ink); margin-bottom:14px;
+  }
+  #qrcode{display:inline-flex; align-items:center; justify-content:center; background:#fff; padding:14px; min-height:172px; min-width:172px;}
+  .qrhint{font-family:'Courier Prime', monospace; font-size:10px; color:var(--ink-soft); margin-top:12px;}
+  .btn-row{display:flex; gap:8px; justify-content:center; flex-wrap:wrap;}
+  .btn{
+    font-family:'Courier Prime', monospace; font-weight:700; font-size:11px; letter-spacing:.04em; text-transform:uppercase;
+    background:var(--amber-deep); color:var(--page); border:none; padding:8px 14px; cursor:pointer;
+  }
+  .btn.two{background:var(--red-deep);}
+  .btn.alt{background:var(--ink);}
+  .btn:hover{filter:brightness(1.15);}
+
+  footer{text-align:center; color:#8A8272; font-family:'Courier Prime', monospace; font-size:10px; letter-spacing:.1em; margin-top:50px; opacity:.75;}
+
+  @media (max-width:520px){
+    .mini-grid{grid-template-columns:1fr;}
+    .entry-sub{display:none;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <span>Bright Falls Case File</span>
+    <span>Digital Library · Two Books</span>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="eyebrow">Psychological Horror — 2010 &amp; 2023</div>
+    <h1 class="title">Alan Wake</h1>
+    <h2 class="subhead">Book One &amp; Book Two, Together</h2>
+    <p class="subtitle">A missing novelist, a Pacific Northwest town swallowed by darkness, and a story that keeps rewriting itself thirteen years later.</p>
+    <div class="flag-row">
+      <span class="flag">Remedy Entertainment</span>
+      <span class="flag red">Remedy Connected Universe</span>
+      <span class="flag">5M+ Combined Copies</span>
+    </div>
+
+    <div class="scene">
+      <svg viewBox="0 0 720 200" width="100%" style="display:block;">
+        <rect width="720" height="200" fill="#0A0A0C"/>
+        <defs>
+          <radialGradient id="beam-aw" cx="50%" cy="0%" r="80%">
+            <stop offset="0" stop-color="#E8A23D" stop-opacity=".28"/>
+            <stop offset="60%" stop-color="#E8A23D" stop-opacity=".05"/>
+            <stop offset="100%" stop-color="#E8A23D" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="soft-aw"><feGaussianBlur stdDeviation="5"/></filter>
+        </defs>
+        <polygon points="280,0 440,0 620,200 100,200" fill="url(#beam-aw)"/>
+        <!-- tree silhouettes -->
+        <path d="M0 150 L30 100 L50 140 L80 80 L110 145 L150 95 L190 150 L230 110 L270 150 L310 90 L350 150 L400 105 L440 150 L480 95 L520 150 L560 110 L600 150 L650 90 L690 150 L720 120 V200 H0 Z" fill="#0F0F10"/>
+        <path d="M0 175 L60 155 L120 180 L190 150 L260 178 L330 150 L410 180 L480 152 L560 178 L630 150 L720 172 V200 H0 Z" fill="#060607"/>
+        <!-- lighthouse silhouette -->
+        <g transform="translate(600,60)" opacity=".95">
+          <rect x="-6" y="60" width="12" height="70" fill="#050506"/>
+          <polygon points="-10,60 0,20 10,60" fill="#050506"/>
+          <rect x="-3" y="24" width="6" height="10" fill="#E8A23D" opacity=".6"/>
+        </g>
+        <!-- red glow (dark presence) -->
+        <ellipse cx="150" cy="150" rx="50" ry="14" fill="#A81E1E" opacity=".18" filter="url(#soft-aw)"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- PAGE I — THE STORY SO FAR -->
+  <div class="entry">
+    <div class="entry-head">
+      <span class="entry-num">PAGE 01</span>
+      <span class="entry-title">The Story So Far</span>
+      <span class="entry-sub">Origins &amp;<br>Timeline</span>
+    </div>
+    <div class="page">
+      <p>Alan Wake began as Remedy's genre experiment: a bestselling thriller writer arrives in the small town of Bright Falls only to have his wife vanish and his own unwritten manuscript start coming true around him, page by page. Thirteen years later, Alan Wake 2 picked the thread back up as Remedy's first full survival-horror game — splitting the story between Alan, still trapped writing his way out of an alternate dimension called the Dark Place, and Saga Anderson, an FBI agent investigating ritual murders that trace back to Bright Falls.</p>
+      <p>Both games sit inside what Remedy calls the Remedy Connected Universe — the same fictional world shared with Control, where Alan Wake's manuscript pages, Federal Bureau of Control case files, and Saga's investigation all quietly reference each other.</p>
+    </div>
+    <div class="page">
+      <h3>Case Timeline</h3>
+      <ul class="tl">
+        <li><span class="yr">2010</span><span class="ev">Alan Wake launches on Xbox 360 in May, later reaching PC in 2012.</span></li>
+        <li><span class="yr">2012</span><span class="ev">Alan Wake's American Nightmare, a standalone spin-off, releases digitally.</span></li>
+        <li><span class="yr">2019</span><span class="ev">Alan Wake appears as DLC inside Control, tying the two stories together.</span></li>
+        <li><span class="yr">2021</span><span class="ev">Alan Wake Remastered brings the original to PS4/5 for the first time.</span></li>
+        <li><span class="yr">2023</span><span class="ev">Alan Wake 2 releases October 27 as Remedy's first survival horror game.</span></li>
+        <li><span class="yr">2026</span><span class="ev">Alan Wake 2 crosses 3 million copies sold; a Night Springs expansion and further RCU crossovers continue the story.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PAGE II — THE BOOKS -->
+  <div class="entry">
+    <div class="entry-head">
+      <span class="entry-num">PAGE 02</span>
+      <span class="entry-title">The Books</span>
+      <span class="entry-sub">Game by<br>Game</span>
+    </div>
+
+    <!-- BOOK ONE -->
+    <div class="book">
+      <div class="book-head">
+        <div>
+          <span class="book-tag">Book One</span>
+          <h3 class="book-title">Alan Wake</h3>
+        </div>
+        <span class="book-year">2010 · Remedy Entertainment</span>
+      </div>
+      <div class="book-body">
+        <p>A bestselling writer searches Bright Falls for his missing wife and discovers pages of a horror novel he doesn't remember writing — one that's coming true around him, chapter by chapter, as darkness itself turns the town against him.</p>
+        <div class="mini-grid">
+          <div class="mini-spec"><span class="k">Setting</span><span class="v">Bright Falls, Washington</span></div>
+          <div class="mini-spec"><span class="k">Sales</span><span class="v">3.2M+ copies (2015 figure)</span></div>
+        </div>
+        <div class="mini-scores">
+          <div class="mini-chip"><span class="num">83</span><span class="src">Metacritic</span></div>
+          <div class="mini-chip"><span class="num">9/10</span><span class="src">IGN</span></div>
+        </div>
+        <div class="mini-notes">
+          <div class="mini-note"><span class="mark">01</span>Light is your only real weapon — always burn away an enemy's dark shield with your flashlight before shooting.</div>
+          <div class="mini-note"><span class="mark">02</span>Collect manuscript pages as you go; they preview upcoming threats and flesh out the story's found-footage structure.</div>
+        </div>
+        <div class="mini-links">
+          <a class="mini-link" href="https://www.alanwake.com/" target="_blank" rel="noopener"><span class="ico">✎</span><strong>Official Site — alanwake.com</strong></a>
+          <a class="mini-link placeholder"><span class="ico">＋</span><strong>Add a video guide</strong></a>
+        </div>
+        <button class="book-qr-btn" onclick="setQR('https://store.steampowered.com/app/108710/Alan_Wake/')">Use This Game's Steam Page ↓</button>
+      </div>
+    </div>
+
+    <!-- BOOK TWO -->
+    <div class="book two">
+      <div class="book-head">
+        <div>
+          <span class="book-tag">Book Two</span>
+          <h3 class="book-title">Alan Wake 2</h3>
+        </div>
+        <span class="book-year">2023 · Remedy Entertainment</span>
+      </div>
+      <div class="book-body">
+        <p>Thirteen years on, FBI agent Saga Anderson investigates ritual killings in Bright Falls while Alan — still trapped in the Dark Place — writes a new manuscript to try to change his own fate. Remedy's first true survival horror game, and its most ambitious to date.</p>
+        <div class="platform-note">Not available on Steam — Alan Wake 2 is an Epic Games Store exclusive.</div>
+        <div class="mini-grid">
+          <div class="mini-spec"><span class="k">Playable Leads</span><span class="v">Saga Anderson &amp; Alan Wake</span></div>
+          <div class="mini-spec"><span class="k">Sales</span><span class="v">3M+ copies (2026 figure)</span></div>
+        </div>
+        <div class="video-frame">
+          <div class="vlabel"><strong>Reveal Trailer</strong> — The Game Awards 2023</div>
+          <div class="video-embed">
+            <iframe src="https://www.youtube.com/embed/SZU2vRsi0aA" title="Alan Wake 2 Reveal Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+        </div>
+        <div class="mini-scores">
+          <div class="mini-chip"><span class="num">89</span><span class="src">Metacritic</span></div>
+          <div class="mini-chip"><span class="num">92</span><span class="src">OpenCritic</span></div>
+          <div class="mini-chip"><span class="num">98th</span><span class="src">Percentile</span></div>
+        </div>
+        <div class="mini-notes">
+          <div class="mini-note"><span class="mark">01</span>Use Saga's Mind Place board early and often — connecting clues unlocks profiling insights that make combat encounters easier to predict.</div>
+          <div class="mini-note"><span class="mark">02</span>Save your flares for tougher enemy clusters; regular ammo is scarce enough that panic-firing will leave you stranded.</div>
+        </div>
+        <div class="mini-links">
+          <a class="mini-link" href="https://www.alanwake.com/" target="_blank" rel="noopener"><span class="ico">✎</span><strong>Official Site — alanwake.com</strong></a>
+          <a class="mini-link placeholder"><span class="ico">＋</span><strong>Add a video guide</strong></a>
+        </div>
+        <button class="book-qr-btn" onclick="setQR('https://store.epicgames.com/p/alan-wake-2')">Use This Game's Epic Store Page ↓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE III — ARCHIVE -->
+  <div class="entry">
+    <div class="entry-head">
+      <span class="entry-num">PAGE 03</span>
+      <span class="entry-title">Archive</span>
+      <span class="entry-sub">General<br>Reference</span>
+    </div>
+    <div class="linklist">
+      <a class="linkrow" href="https://www.alanwake.com/" target="_blank" rel="noopener">
+        <span class="ico">↗</span>
+        <span class="txt"><strong>Official Site</strong><span>alanwake.com</span></span>
+      </a>
+      <a class="linkrow" href="https://alanwake.fandom.com/" target="_blank" rel="noopener">
+        <span class="ico">↗</span>
+        <span class="txt"><strong>Alan Wake Wiki</strong><span>Manuscript pages, lore &amp; RCU connections</span></span>
+      </a>
+    </div>
+  </div>
+
+  <!-- QR TOOL -->
+  <div class="entry">
+    <div class="entry-head">
+      <span class="entry-num">PAGE 04</span>
+      <span class="entry-title">Print &amp; Display</span>
+    </div>
+    <div class="qrbox">
+      <input id="qrurl" type="text" value="https://store.steampowered.com/app/108710/Alan_Wake/">
+      <div class="btn-row">
+        <button class="btn" onclick="makeQR()">Generate QR Code</button>
+        <button class="btn alt" onclick="resetDefault()">Reset to Book One</button>
+      </div>
+      <div id="qrcode"></div>
+      <div class="qrhint">Book One links to Steam by default. Use a book's "Use This Game's Page" button above to switch — Book Two points to the Epic Games Store, since it isn't on Steam.</div>
+    </div>
+  </div>
+
+  <footer>Curated for a personal digital library · Two Books, One Story</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  let qr = null;
+  function makeQR(){
+    const url = document.getElementById('qrurl').value.trim();
+    const box = document.getElementById('qrcode');
+    box.innerHTML = '';
+    if(!url){ box.innerHTML = '<span style="font-family:\'Courier Prime\',monospace;font-size:11px;color:#333;">Enter a URL first</span>'; return; }
+    qr = new QRCode(box, { text:url, width:160, height:160, colorDark:'#211C14', colorLight:'#ffffff' });
+  }
+  function resetDefault(){
+    document.getElementById('qrurl').value = 'https://store.steampowered.com/app/108710/Alan_Wake/';
+    makeQR();
+  }
+  function setQR(url){
+    document.getElementById('qrurl').value = url;
+    makeQR();
+    document.getElementById('qrcode').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  window.addEventListener('DOMContentLoaded', makeQR);
+</script>
+</body>
+</html>
